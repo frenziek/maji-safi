@@ -1,0 +1,13 @@
+extends home_layout
+
+block content
+    div(id='login-box' class='popup')
+        h2 Login
+        div(class="close fakebutton")
+            p x
+        form(action="/login" method="post")
+                input(type="text" name="email" placeholder="Email")
+                br
+                input(type="password" name="password" placeholder="Password")
+                div
+                    input(type="submit" value="Log In")

@@ -1,0 +1,31 @@
+extends layout
+
+block content
+    h1 Add a new device
+    form(action="/devices" method="post")
+        input(type="text" name="nickname" placeholder="Nickname")
+        br
+        input(type="text" name="phone_number" placeholder="Phone Number")
+        br
+        Run Water Detection: 
+        Yes: input(type="radio" name="run_detect" value:"yes")
+        No: input(type="radio" name="run_detect" value:"no")
+        br
+        Run pH Test: 
+        Yes: input(type="radio" name="run_pH" value:"yes")
+        No: input(type="radio" name="run_pH" value:"no")    
+        br
+        Run Turbidity Test: 
+        Yes: input(type="radio" name="run_turbidity" value:"yes")
+        No: input(type="radio" name="run_turbidity" value:"no")    
+        br
+        Run Temperature Test: 
+        Yes: input(type="radio" name="run_temperature" value:"yes")
+        No: input(type="radio" name="run_temperature" value:"no") 
+        br 
+        input(type="number" name="frequency" placeholder="Daily Frequency")
+        br
+        br
+        div
+            input(type="submit" value="Add Device")
+

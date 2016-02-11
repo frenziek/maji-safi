@@ -1,0 +1,146 @@
+body {
+  font-size: 62.5%;
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+div{
+      color: white;    
+}
+
+#top{
+    display: inline;
+    height: 1em;
+    position: absolute;
+    top: 1em;
+    right: 1em;
+}
+#top div{
+    display: inline;
+    background-color: #0d2c3b;
+    color: white;
+    padding: 0.5em;
+    margin: 0.2em;
+    border-radius: 0.5em;
+}
+
+.fakebutton{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+
+}
+
+#top div:hover{
+    background-color: blue;
+}
+
+.popup{
+    color: black;
+    position: absolute;
+    top: 6rem;
+    left: 20%;
+    width: 50%;
+    height: 50%;
+    background-color: rgba(255,255,255,0.99);
+    padding: 3em;
+    text-align: center;
+    font-size: 2em;
+}
+
+.popup input{
+    margin: 1em;
+}
+
+.close{
+    color: black;
+    font-size: 2em;
+    position: absolute;
+    top: 0;
+    right: 1em;
+}
+.close:hover{
+    color: gray;
+}
+
+
+#welcome{
+    height: 38rem;
+    margin: -5em -5em -5em -5em;
+    padding: 5em 8em 5em 8em;
+    text-align: center;    
+    display: block;
+    background:  #fff url("../images/Nakambe_burkina_blur.jpg") no-repeat right bottom; 
+    background-size: 100%;
+    font-size: 2em;
+}
+
+#sub_welcome{
+    margin: 4rem 5em 0 5em;
+    padding: 2em; 
+/*     background-color: rgba(0,0,0,0.3); */
+    background-color: rgba(13,44,59,0.6);
+/*     background-color: rgba(255,255,255,0.3); */
+/*     background-color: rgba(100,100,100,0.5); */
+}
+
+#welcome h1{
+    font-size: 3em;
+    margin:  0.5em;
+}
+
+#welcome p{
+    margin: 0;
+}
+
+#welcome input[type='text']{
+    margin: 0.5em;
+    -moz-border-radius: 2em;
+    -webkit-border-radius: 2em;
+    border-radius: 2em;
+    border: none;
+    font-size: 1.2rem;
+    font-style: italic;
+    padding: 0.2rem;
+    padding-left: 1rem;
+}
+#welcome input[type='button']{
+    margin: 0.5em;
+    -moz-border-radius: 2em;
+    -webkit-border-radius: 2em;
+    border-radius: 2em;
+    border: none;
+    font-size: 1.2rem;
+}
+#submit{
+    color: white;
+    background-color: rgba(13,44,59,0.8);
+    padding: 0.5em;
+/*     display: block; */
+    margin: auto;
+}
+
+#learn_button{
+    background-color: #0d2c3b;
+    margin: 1.5em auto 1.5em auto;
+    padding: 0.3em;
+    width: 6em;
+}
+
+
+#about{
+    height: 38rem;
+    font-size: 2em;
+    background-color: #0d2c3b;
+    margin: 0 -5em -5em -5em;
+    padding: 6em;
+}
+#footer{
+    color: #0d2c3b;
+/*     background-color: white; */
+}

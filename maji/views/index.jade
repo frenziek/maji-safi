@@ -1,0 +1,72 @@
+extends home_layout
+
+block content
+    if  admin
+        p Hello, #{admin.display_name}
+    else
+        div(id='top')
+            div(id="login-link" class="fakebutton")
+                bollock Administrator Login
+            div(id="register-link" class="fakebutton")
+                bollock Administrator Sign Up
+        div(id='login-box' class='popup' style="display: none;")
+            h2 Login
+            div(class="close fakebutton")
+                p x
+            form(action="/login" method="post")
+                    input(type="text" name="email" placeholder="Email")
+                    br
+                    input(type="password" name="password" placeholder="Password")
+                    div
+                        input(type="submit" value="Log In")
+        div(id='register-box' class='popup' style="display: none;")
+            h2 Sign Up
+            div(class="close fakebutton")
+                p x
+            form(action="/register" method="post")
+                    input(type="text" name="display_name" placeholder="Name")
+                    br
+                    input(type="text" name="email" placeholder="Email")
+                    br
+                    input(type="password" name="password" placeholder="Password")
+                    br
+                    input(type="password" name="confirm_password" placeholder="Confirm Password")
+                    br
+                    input(type="text" name="country" placeholder="Country")
+                    div
+                        input(type="submit" value="Sign Up")
+    div(id='welcome')
+        div(id='sub_welcome')
+            h1(id='main_title') Maji Safi
+            p(style="font-style: italic;") Get quality water information. 
+            form(action="/data" method="post")
+                input(type='text' placeholder="Location" name='location')
+                input(type='text' placeholder="Radius (km)" name='radius')
+                br
+                input(type='submit' name='submit' value="Search Data" id="submit") 
+        div(id='learn_button' class='fakebutton')
+            p Learn More
+    div(id='about')
+        h2(class='sub_title') What is Maji Safi?
+        p.  
+            Maji Safi is a project to help connect people with clean water. Our devices detect water quality remotely and relay information to users via sms and to administrators and the public via web. Browse water quality data by location above. 
+    div(id='footer')
+        p Copyright SDP 16 Group 13
+    script.
+        $( document ).ready(function() {
+            $("#login-link").click(function(){
+                $("#login-box").fadeIn("fast");
+            });
+            $(".close").click(function(){
+                $("#login-box").fadeOut("fast");
+                $("#register-box").fadeOut("fast");
+            });
+            $("#register-link").click(function(){
+                $("#register-box").fadeIn("fast");
+            });            
+            $("#learn_button").click(function(){
+               $('html, body').animate({
+                    scrollTop: $("#about").offset().top
+                }, 500);    
+            });     
+        });
