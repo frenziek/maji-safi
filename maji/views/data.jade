@@ -1,5 +1,17 @@
-form(action="/data" method="post")
-                input(type='text' placeholder="Location" name='location')
-                input(type='text' placeholder="Radius (km)" name='radius')
-                br
-                input(type='submit' name='submit' value="Search Data" id="submit") 
+extend layout
+
+table
+  thead
+    tr
+      th Result
+      th Time
+      th Test ID
+      th Device ID
+  tbody
+    - each item in #{items}
+      tr
+        td= item.result
+        td= item.time
+        td= item.test_id
+        td= item.device_id
+        

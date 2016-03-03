@@ -1,0 +1,18 @@
+extends home_layout
+
+block content
+    div(id='register-box' class='popup')
+        h2 Sign Up
+        p #{signupMessage}
+        form(action="/register" method="post")
+                input(type="text" name="display_name" placeholder="Name")
+                br
+                input(type="text" name="email" placeholder="Email")
+                br
+                input(type="password" name="password" placeholder="Password")
+                br
+                input(type="password" name="confirm_password" placeholder="Confirm Password")
+                br
+                input(type="text" name="country" placeholder="Country")
+                div
+                    input(type="submit" value="Sign Up")
