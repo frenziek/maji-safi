@@ -1,7 +1,10 @@
 doctype html
 html
   head
-    title= title
+    title= title || "Maji Safi"
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
+    #header
+        h1 Maji safi
+        img(src='/images/favicon-32x32.png') 
     block content

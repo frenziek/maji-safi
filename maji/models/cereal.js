@@ -1,9 +1,7 @@
 var Sequelize = require('sequelize');
-// var pg = require('pg');
-var connectionString = process.env.SDP_DATABASE_URL;
-var sequelize = new Sequelize(connectionString);
+var sequelize = new Sequelize("postgres://postgres:kaitlin1@localhost:5432/sdp");
+    //process.env.SDP_DATABASE_URL);
 var Promise = require("bluebird");
-  //  passportLocalSequelize = require('passport-local-sequelize');
 var bcrypt = require('bcrypt-nodejs');
 
 
@@ -11,30 +9,26 @@ var Admin = sequelize.define('Admin', {
     id: { type: Sequelize.UUID, primaryKey: true, defaultValue: Sequelize.UUIDV4()},
     email: { type: Sequelize.STRING, allowNull: false },
     display_name: { type: Sequelize.STRING, allowNull: false },
-    pwhash: { type: Sequelize.STRING(1024), allowNull: false },
-    salt: { type: Sequelize.STRING },
+    password: { type: Sequelize.STRING(1024), allowNull: false },
     created:  { type: Sequelize.DATE, defaultValue: Sequelize.NOW },
     country: {type: Sequelize.STRING}
 }, {
     instanceMethods:{
-        generateHash : function(password){
-            return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-    },
-        validPassword: function(password){
+        validPassword: function(password) {
             return bcrypt.compareSync(password, this.password);
         }
-    }
+    }   
 } 
 );
 
-/*
-passportLocalSequelize.attachToUser(Admin, {
-    usernameField: 'nick',
-    hashField: 'pwhash',
-    saltField: 'salt',
-    passReqToCallback: true
+Admin.beforeCreate(function(user, options) {
+    console.log(user.password);
+    var hash = bcrypt.hashSync(user.password, bcrypt.genSaltSync(8));
+    user.password = hash;
 });
-*/
+
+
+
 var Device = sequelize.define('Device', {
     id: { type: Sequelize.UUID, primaryKey: true, defaultValue: Sequelize.UUIDV4()},
     nickname: { type: Sequelize.STRING},
