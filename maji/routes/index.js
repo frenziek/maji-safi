@@ -16,7 +16,7 @@ module.exports = function(router, passport){
         var query = req.body;
         models.TestResult.findAll()
         .then(function(results){
-            res.send(results);
+            res.render('data', results);
         });
     });
 

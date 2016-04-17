@@ -70,7 +70,7 @@ div{
 
 
 #welcome{
-    height: 38rem;
+    height: 35rem;
     margin: -5em -5em -5em -5em;
     padding: 5em 8em 5em 8em;
     text-align: center;    
@@ -81,12 +81,9 @@ div{
 }
 
 #sub_welcome{
-    margin: 4rem 5em 0 5em;
+    margin: 2rem 5em 0 5em;
     padding: 2em; 
-/*     background-color: rgba(0,0,0,0.3); */
     background-color: rgba(13,44,59,0.6);
-/*     background-color: rgba(255,255,255,0.3); */
-/*     background-color: rgba(100,100,100,0.5); */
 }
 
 #welcome h1{
