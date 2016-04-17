@@ -25,8 +25,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 var routes = require('./routes/index')(app, passport);
-var texts = require('./routes/text');
-var devices = require('./routes/devices');
+//var texts = require('./routes/text')(app, passport);
 
 
 // catch 404 and forward to error handler

@@ -4,7 +4,6 @@ var sequelize = new Sequelize("postgres://postgres:kaitlin1@localhost:5432/sdp")
 var Promise = require("bluebird");
 var bcrypt = require('bcrypt-nodejs');
 
-
 var Admin = sequelize.define('Admin', {
     id: { type: Sequelize.UUID, primaryKey: true, defaultValue: Sequelize.UUIDV4()},
     email: { type: Sequelize.STRING, allowNull: false },
@@ -27,8 +26,6 @@ Admin.beforeCreate(function(user, options) {
     user.password = hash;
 });
 
-
-
 var Device = sequelize.define('Device', {
     id: { type: Sequelize.UUID, primaryKey: true, defaultValue: Sequelize.UUIDV4()},
     nickname: { type: Sequelize.STRING},
@@ -43,8 +40,7 @@ var Device = sequelize.define('Device', {
     frequency: {type: Sequelize.INTEGER, defaultValue: 5}    
 });
 
-Admin.belongsToMany(Device, {through: 'AdminDevice'});
-Device.belongsToMany(Admin, {through: 'AdminDevice'});
+Device.belongsTo(Admin);
 
 
 var Test = sequelize.define('Test', {

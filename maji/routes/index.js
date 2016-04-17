@@ -2,7 +2,6 @@ var models = require('../models/cereal.js');
 var Promise = require('bluebird');
 
 module.exports = function(router, passport){
-
     router.get('/', function(req, res, next) {
         console.log(req.session);
         res.render('index', { admin : req.admin});
@@ -22,13 +21,17 @@ module.exports = function(router, passport){
     });
 
     //ADMIN ROUTES
-
     router.get('/admins', isLoggedIn, function(req, res, next){
         var admin = req.user;
-        console.log(admin);
-        res.render('admin', {
-            admin: admin,
-            title: "Welcome"
+        models.Device.findAll({
+            where: {
+                AdminId: admin.id
+            }}).then(function(devices){
+                res.render('admin', {
+                    admin: admin,
+                    adminDevices: devices,
+                    title: "Welcome"
+                });
         });
     })
 
@@ -75,10 +78,14 @@ module.exports = function(router, passport){
             res.send(admin.display_name);
         });
     });
+    
+    require('./devices')(router, passport);
+    require('./text')(router);
+
 };
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
         return next();
-    res.redirect('/');
+    res.redirect('/login');
 }
