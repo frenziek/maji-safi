@@ -14,8 +14,8 @@ var geocoder = require('node-geocoder')(geocoderProvider, httpAdapter, extra);
 //var accountSid = 'AC74a25c39ba58c0b81f67d6504c0f0eed'; 
 //var authToken = 'c9d73afc6b77cdec51431bfde8245b82'; 
 //live creds
-var accountSid = 'ACad57e3cdbbc6af707b3daa0ec60766a0';
-var authToken = '0126dd3700c8b4aa528a9b99605e5d10';
+var accountSid = 'AC5c6190a7f3e77af507fe032caee15cf9';
+var authToken = '5653c3e61293576839a0f6770eb003f9';
 //require the Twilio module and create a REST client 
 var twilio = require('twilio')(accountSid, authToken); 
 
@@ -28,9 +28,9 @@ module.exports = function(router){
         var message = req.body;
         console.log(message.device_number);
         twilio.messages.create({ 
-        to: message.device_number, 
-        from: twilio_number, 
-        body: "Run tests.",   
+            to: message.device_number, 
+            from: twilio_number, 
+            body: message.Body,   
         }, function(err, message) { 
             if(err){
                 console.log(err);    
