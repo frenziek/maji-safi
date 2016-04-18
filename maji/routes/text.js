@@ -49,11 +49,7 @@ module.exports = function(router){
         var sender = req.body.From;
         var info = req.body.Body;
         var message = '';
-        /*models.Device.findAll({
-            where: {
-                phone_number: sender.split("+1")[1],
-            }
-        }).then(function(devices){*/
+        /*{*/
         var devices = ["hello"];
         if(devices == null || devices.length == 0){
                 message = "hi device";
@@ -68,10 +64,17 @@ module.exports = function(router){
         
     
         router.get('/textsmaybe', function(req, res, next){
-            console.log(req.query);
-            res.status(200);
-            res.set('Content-Type', 'text/xml');
-            res.send('<Response><Message>hi friends</Message></Response>');
+            var sender = req.query.From;
+            var info = req.query.Body;
+            models.Device.findAll({
+            where: {
+                phone_number: sender.split("+1")[1],
+            }
+        }).then(function(devices){
+                res.status(200);
+                res.set('Content-Type', 'text/xml');
+                res.send('<Response><Message>hi friends</Message></Response>');
+            });
             
         });
 
