@@ -49,6 +49,9 @@ module.exports = function(router){
         var sender = req.body.From;
         var info = req.body.Body;
         var message = '';
+        res.status(200);
+        res.set('Content-Type', 'text/xml');
+        res.send('<Response></Response>');
 
         models.Device.findAll({
             where: {
@@ -65,9 +68,6 @@ module.exports = function(router){
         
         });
         
-        res.status(200);
-        res.set('Content-Type', 'text/xml');
-        res.send('<Response></Response>');
 
     });
 
