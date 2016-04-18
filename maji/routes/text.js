@@ -60,7 +60,7 @@ module.exports = function(router){
         } else if(devices.length > 1){        
         } else {
             message = "hi user";
-        };
+        }
         res.status(200);
         res.set('Content-Type', 'text/xml');
         res.send('<Response></Response>');
@@ -68,7 +68,7 @@ module.exports = function(router){
         });
         
 
-    });
+  //  });
 
 
             
