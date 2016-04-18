@@ -49,10 +49,6 @@ module.exports = function(router){
         var sender = req.body.From;
         var info = req.body.Body;
         var message = '';
-        res.status(200);
-        res.set('Content-Type', 'text/xml');
-        res.send('<Response></Response>');
-
         models.Device.findAll({
             where: {
                 phone_number: sender.split("+1")[1],
@@ -60,11 +56,31 @@ module.exports = function(router){
         }).then(function(devices){
             if(devices == null || devices.length == 0){
                 message = "hi device";
+                        res.status(200);
+        res.set('Content-Type', 'text/xml');
+        res.send('<Response></Response>');
+        
+
             } else if(devices.length > 1){
+                        res.status(200);
+        res.set('Content-Type', 'text/xml');
+        res.send('<Response></Response>');
+        
+
 
             } else {
                 message = "hi user";
+                        res.status(200);
+        res.set('Content-Type', 'text/xml');
+        res.send('<Response></Response>');
+        
+
             };
+                    res.status(200);
+        res.set('Content-Type', 'text/xml');
+        res.send('<Response></Response>');
+        
+
         
         });
         
