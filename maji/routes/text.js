@@ -45,26 +45,7 @@ module.exports = function(router){
 
 
     //TEXT MESSAGE FUNCTIONALITY
-    router.post('/texts/', function(req, res, next){
-        console.log(req.body);
-        var sender = req.body.From;
-        var info = req.body.Body;
-        var message = '';
-        /*{*/
-        var devices = ["hello"];
-        if(devices == null || devices.length == 0){
-                message = "hi device";
-        } else if(devices.length > 1){        
-        } else {
-            message = "hi user";
-        }
-        res.status(200);
-        res.set('Content-Type', 'text/xml');
-        res.send('<Response></Response>');
-        });
-        
-    
-        router.get('/textsmaybe', function(req, res, next){
+    router.get('/textsmaybe', function(req, res, next){
             var sender = req.query.From;
             var info = req.query.Body;
             models.Device.findAll({
@@ -81,7 +62,7 @@ module.exports = function(router){
                 }
                 res.status(200);
                 res.set('Content-Type', 'text/xml');
-                res.send('<Response><Message>hi friends</Message></Response>');
+                res.send('<Response><Message>'+message+'</Message></Response>');
             });
             
         });
