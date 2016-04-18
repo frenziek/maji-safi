@@ -64,9 +64,16 @@ module.exports = function(router){
         res.status(200);
         res.set('Content-Type', 'text/xml');
         res.send('<Response></Response>');
-
         });
         
+    
+        router.get('/textsmaybe', function(req, res, next){
+            console.log(req);
+            res.status(200);
+            res.set('Content-Type', 'text/xml');
+            res.send('<Response><Message>hi friends</Message></Response>');
+            
+        });
 
   //  });
 
