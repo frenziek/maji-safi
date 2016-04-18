@@ -91,9 +91,7 @@ module.exports = function(router){
                     result.device_id = devices[0].id
                     test_results.push(result);
                 }
-                models.TestResult.bulkCreate(
-                    test_results
-                ).then(function(result){
+                models.TestResult.bulkCreate(test_results).then(function(result){
                         test_results.push(r);
                 });
                 console.log(test_results);
