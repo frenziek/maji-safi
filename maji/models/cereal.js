@@ -56,9 +56,6 @@ var TestResult = sequelize.define('TestResult', {
     device_id: {type: Sequelize.UUID}
 });
 
-// TestResult.hasOne(Test, {as: 'TestType', foreignKey: 'test_id'});
-// TestResult.hasOne(Device, {as: 'Device', foreignKey: 'device_id'});
-// Device.hasMany(TestResult, {as: 'Result'});
 
 var UserRequest = sequelize.define('UserRequest', {
     id: { type: Sequelize.UUID, primaryKey: true, defaultValue: Sequelize.UUIDV4()},
@@ -74,12 +71,6 @@ var DeviceRec = sequelize.define('DeviceRec', {
     request_id: {type: Sequelize.UUID},
     rank: {type: Sequelize.INTEGER}
 });
-/*  
-
-DeviceRec.hasOne(UserRequest, {as: 'UserRequest', foreignKey: 'request_id'});
-DeviceRec.hasOne(Device, {as: 'Device', foreignKey: 'device_id'});
-Device.hasMany(DeviceRec, {as: 'Reccomendation'});*/
-
 
 Admin.sync();
 Device.sync();
