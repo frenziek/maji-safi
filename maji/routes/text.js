@@ -81,7 +81,7 @@ module.exports = function(router){
                 res.set('Content-Type', 'text/xml');
                 res.send('<Response><Message>Device duplicate error.</Message></Response>');
             } else {
-            //water (1 or 0), pH, turbidity, temperature
+                //water (1 or 0), pH, turbidity, temperature
                 var results = info.split(",");
                 var test_results = [];
                 for (r in results) {
@@ -91,7 +91,9 @@ module.exports = function(router){
                     result.device_id = devices[0].id
                     test_results.push(result);
                 }
-                models.TestResult.bulkCreate({test_results}).then(function(result){
+                models.TestResult.bulkCreate({
+                    test_results
+                }).then(function(result){
                         test_results.push(r);
                 });
                 console.log(test_results);
