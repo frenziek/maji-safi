@@ -92,16 +92,15 @@ block content
                         td Result
                         each result, i in results
                             tr(class=(i % 2 == 0) ? 'odd' : 'even') 
-                               td #{result.time}
-                               td 
+                                td #{result.time} 
                                 if(result.test_id == 0)
-                                    Water Detection
+                                    td Water Detection
                                 else if(result.test_id == 1)
-                                    pH
+                                    td pH
                                 else if(result.test_id == 2)
-                                    Turbidity
+                                    td Turbidity
                                 else if(result.test_id == 3)
-                                    Temperatures
+                                    td Temperatures
                                 else 
-                                    Nope
+                                    td N/A
                                 td #{result.result}
