@@ -45,21 +45,31 @@ module.exports = function(router){
 
     //TEXT MESSAGE FUNCTIONALITY
     router.post('/texts/', function(req, res, next){
-        console.log('hit');
         var sender = req.body.From;
         var info = req.body.Body;
-        res.status(200);
-        res.set('Content-Type', 'text/xml');
-        res.send('<Response></Response>');
-    });
-
-
-        /*models.Device.findAll({
+        var message = '';
+        
+        models.Device.findAll({
             where: {
                 phone_number: sender.split("+1")[1],
             }
         }).then(function(devices){
             if(devices == null || devices.length == 0){
+                message = "hi device";
+            } else if(devices.length > 1){
+
+            } else {
+                message = "hi user";
+            };
+        
+            res.status(200);
+            res.set('Content-Type', 'text/xml');
+            res.send('<Response>'+message+'</Response>');
+        });
+    });
+
+
+            
     /*             geocoder.geocode(info, function(err, location){
     //                 models.Device.findAll({
     //                     where:{
