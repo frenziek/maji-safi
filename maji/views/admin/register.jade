@@ -1,4 +1,4 @@
-extends home_layout
+extends ../layouts/layout
 
 block content
     div(id='register-box' class='popup')
@@ -16,3 +16,6 @@ block content
                 input(type="text" name="country" placeholder="Country")
                 div
                     input(type="submit" value="Sign Up")
+        
+        br
+        a(href='/register') Already have an account? Click here to login.

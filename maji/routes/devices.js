@@ -7,50 +7,49 @@ var httpAdapter = 'https';
 
 module.exports = function(router, passport){
     //DEVICE ROUTES
+    router.get('/devices', function(req, res, next){
+        res.redirect('/admin'); 
+    });
+    
     router.get('/devices/add',isLoggedIn, function(req, res, next){
         var admin = req.user;
-        res.render('adddevice', { admin: admin});
+        res.render('admin/adddevice', { admin: admin});
     });
 
     router.get('/devices/:device_id', function(req, res, next){
+        var admin = req.user;
         var device_id = req.params.device_id;
         models.Device.findAll({
                 where: {
                     id: device_id
                 }
             }).then(function(device){
-                res.redirect('/admins');
+                models.TestResult.findAll({
+                    where: {
+                        device_id: device_id   
+                    }
+                }).then(function(results){
+                    res.render('admin/device', {
+                        device: device[0],
+                        results: results,
+                        admin: admin
+                    });
+                });
             });
     });
 
-    //all
-    router.get('/devices/all', function(req, res){
-        models.Device.findAll().then(function(devices){
-            res.send(devices);
-        });
-    });
-
-    router.get('/devices/testresults/', function(req, res){
-        models.TestResult.findAll().then(function(results){
-            res.send(results);
-        });
-    });
-
-    router.post('/devices/', function(req, res){
+    router.post('/devices/add', isLoggedIn, function(req, res){
         var admin = req.user;
         var device = req.body;
-        var run_detect, run_pH, run_temperature, run_turbidity = false;
-        if( device.run_detect == "yes") run_detect = true;
-        if( device.run_pH == "yes") run_pH = true;
-        if( device.run_temperature == "yes") run_temperature = true;
-        if( device.run_turbidity == "yes") run_turbidity = true;
         models.Device.create({ 
                 nickname: device.nickname,
                 phone_number: device.phone_number,
-                run_detect: run_detect,
-                run_pH: run_pH, 
-                run_turbidity: run_turbidity,
-                run_temperature: run_temperature,
+                location_x: device.location_x,
+                location_y: device.location_y,
+                run_detect: device.run_detect,
+                run_pH: device.run_pH, 
+                run_turbidity: device.run_turbidity,
+                run_temperature: device.run_temperature,
                 frequency: device.frequency,
                 AdminId: admin.id,
         })
@@ -59,12 +58,37 @@ module.exports = function(router, passport){
         });
     });
 
-    router.put('/devices/:device_id', function(req, res){
-
+    router.post('/devices/update/:device_id', isLoggedIn, function(req, res){
+        var input = req.body;
+        models.Device.findOne({ 
+            where: { id: req.params.device_id } 
+        }).then(function(device) {
+            device.update({ 
+                nickname: input.nickname,
+                phone_number: input.phone_number,
+                location_x: input.location_x,
+                location_y: input.location_y,
+                run_detect: input.run_detect,
+                run_pH: input.run_pH, 
+                run_turbidity: input.run_turbidity,
+                run_temperature: input.run_temperature,
+                frequency: input.frequency,
+            }).then(function(dev){
+                res.redirect('/devices/'+dev.id);         
+            });
+        });
     });
+    
 
-    router.delete('/devices/:device_id', function(req, res){
-
+    router.get('/devices/delete/:device_id', isLoggedIn, function(req, res, next){
+        models.Device.findOne({ 
+            where: { 
+                id: req.params.device_id 
+            } 
+        }).then(function(device) {
+            device.destroy();
+            res.redirect('/admin');
+        });
     });
 
 }

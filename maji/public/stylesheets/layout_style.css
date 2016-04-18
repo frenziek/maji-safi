@@ -12,6 +12,11 @@ body{
     display: inline;
 }
 
+#header a{
+    text-decoration: none;
+    color: #0d2c3b;
+}
+
 #header ul{
     display: table;
     width: 96%;    
@@ -22,14 +27,14 @@ body{
 }
 
 #header ul li:nth-child(3){
-    width: 55%;
+    width: 48%;
 }
 
 #header ul li:nth-child(4){
     padding-right: 5px;
 }
 
-#header ul li a {
+#header .link {
     background-color: #0d2c3b;
     color: white;
     padding: 10px 20px;
@@ -37,7 +42,7 @@ body{
     border-radius: 4px;
 }
 
-#header ul li a:hover {
+#header .link:hover {
     background-color: blue;
 }
 
@@ -80,5 +85,9 @@ body{
 
 #main p{
     display: inline;
+}
+
+.table-header{
+    font-weight: bold;
 }
 

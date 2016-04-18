@@ -1,11 +1,18 @@
-extends home_layout
+extends ../layouts/layout
 
 block content
     div(id='login-box' class='popup')
         h2 Login
+        if message
+            #flash
+                #{message}
         form(action="/login" method="post")
                 input(type="text" name="email" placeholder="Email")
                 br
                 input(type="password" name="password" placeholder="Password")
                 div
                     input(type="submit" value="Log In")
+                    
+                    
+        br            
+        a(href='/register') Don't have an account? Click here to sign up.

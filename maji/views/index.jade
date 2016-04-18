@@ -1,8 +1,13 @@
-extends home_layout
+extends layouts/home_layout
 
 block content
-    if  admin
-        p Hello, #{admin.display_name}
+    if admin
+        div(id='top')
+            div(id="dev-link" class="fakebutton")
+                a(href='/admin') Devices
+            div(id="logout-link" class="fakebutton")
+                a(href='/logout') Logout
+
     else
         div(id='top')
             div(id="login-link" class="fakebutton")

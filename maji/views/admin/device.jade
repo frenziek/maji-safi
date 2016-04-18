@@ -1,0 +1,104 @@
+extends ../layouts/layout
+
+block head
+    title Device: #{device.nickname}
+
+block content
+        if admin
+            form(action="/devices/update/"+device.id method="post")
+                table(class='update_form')
+                    tr
+                        td Nickname
+                        td(colspan='2') 
+                            input(type="text" name="nickname" value=device.nickname)
+                    tr
+                        td Phone number:
+                        td(colspan='2')
+                            input(type="text" name="phone_number" value=device.phone_number)
+                    tr
+                        td Location
+                        td 
+                            input(type="text" name="location_x" value=device.location_x)
+                        td
+                            input(type="text" name="location_y" value=device.location_y)
+                    tr
+                        td Frequency
+                        td(colspan='2') 
+                            input(type="number" name="frequency" value=device.frequency)
+                    tr
+                        td Water Detection Test
+                        td 
+                            input(type="checkbox" name="run_detect" value=device.run_detect)
+                    tr
+                        td pH Test
+                        td 
+                            input(type="checkbox" name="run_pH" value=device.run_pH)
+                    tr
+                        td Turbidity Test
+                        td 
+                            input(type="checkbox" name="run_turbidity" value=device.run_turbidity)
+                    tr
+                        td Temperature Test
+                        td 
+                            input(type="checkbox" name="run_temperature" value=device.run_temperature)
+                    tr 
+                        td(colspan='2')
+                            input(type="submit" value="Update Device")
+        else 
+            table
+                tr
+                    td Location
+                    td #{device.location_x}, #{device.location_y}
+                tr
+                    td Current Update Frequency
+                    td #{device.frequency}
+                tr
+                    td Water Detection Test 
+                    if device.run_detect
+                        td Running
+                    else
+                        td Not Running
+                tr
+                    td pH Test 
+                    if device.run_pH
+                        td Running
+                    else
+                        td Not Running
+                tr
+                    td Turbidity Test 
+                    if device.run_turbidity
+                        td Running
+                    else
+                        td Not Running
+                tr
+                    td Temperature Test 
+                    if device.run_temperature
+                        td Running
+                    else
+                        td Not Running
+
+
+        table
+            thead
+                tr: th(colspan='3') Test Results
+            tbody
+                if(results.length == 0)
+                    tr(class='odd')
+                        td(colspan='3')  This device has not reported any results yet.
+                else
+                    tr(class='table-header') 
+                        td Time
+                        td Test
+                        td Result
+                        each result, i in results
+                            tr(class=(i % 2 == 0) ? 'odd' : 'even') 
+                               td result.time
+                               td 
+                                if(result.test_id == 0)
+                                    Water Detection
+                                if(result.test_id == 1)
+                                    pH
+                                if(result.test_id == 2)
+                                    Turbidity
+                                if(result.test_id == 3)
+                                    Temperatures

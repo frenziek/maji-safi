@@ -1,4 +1,4 @@
-extends layout
+extends ../layouts/layout
 
 block head
     title Your Devices
@@ -43,4 +43,5 @@ block content
                         else
                             td no
                         td  #{device.frequency}
-                        td  Delete this
+                        td 
+                            a(href='devices/delete/' + device.id) Delete

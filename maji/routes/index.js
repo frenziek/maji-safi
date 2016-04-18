@@ -3,8 +3,7 @@ var Promise = require('bluebird');
 
 module.exports = function(router, passport){
     router.get('/', function(req, res, next) {
-        console.log(req.session);
-        res.render('index', { admin : req.admin});
+        res.render('index', { admin : req.user});
     });
 
     router.get('/data', function(req, res, next){
@@ -14,20 +13,21 @@ module.exports = function(router, passport){
     //DATA ROUTE
     router.post('/data', function(req, res, next){
         var query = req.body;
-        models.TestResult.findAll()
+        models.Device.findAll()
         .then(function(results){
+            //need to sort by location and paginate
             res.render('data', results);
         });
     });
 
     //ADMIN ROUTES
-    router.get('/admins', isLoggedIn, function(req, res, next){
+    router.get('/admin', isLoggedIn, function(req, res, next){
         var admin = req.user;
         models.Device.findAll({
             where: {
                 AdminId: admin.id
             }}).then(function(devices){
-                res.render('admin', {
+                res.render('admin/admin', {
                     admin: admin,
                     adminDevices: devices,
                     title: "Welcome"
@@ -35,50 +35,32 @@ module.exports = function(router, passport){
         });
     })
 
-    router.get('/admins/:admin_id', function(req, res, next){
-        var admin_id = req.params.admin_id;
-        models.Admin.findAll({
-                where: {
-                    id: admin
-                }
-                }).then(function(device){
-                    res.render('admin', admin);
-                });
+    router.get('/login', isntLoggedIn, function(req, res, next) {
+        res.render('admin/login');
     });
 
-    router.get('/login', function(req, res) {
-        res.render('login');
-    });
-
-    router.post('/login', passport.authenticate('local-login', {
-            successRedirect : '/admins', 
+    router.post('/login',  passport.authenticate('local-login', {
+            successRedirect : '/admin', 
             failureRedirect : '/login', 
             failureFlash : true 
             }));
 
-    router.get('/register', function(req, res) {
-        res.render('register');
+    router.get('/register', isntLoggedIn, function(req, res, next) {
+        res.render('admin/register');
     });
 
     router.post('/register', passport.authenticate('local-signup', {
-            successRedirect : '/admins', 
+            successRedirect : '/admin', 
             failureRedirect : '/register', 
             failureFlash : true 
         }));
-
-
-    router.put('/admins/:admin_id', function(req, res, next){
-        models.Admin.findById(admin_id).then(function(admin) {
-            res.send(admin.display_name);
-        });
-    });
-
-    router.delete('/admins/:admin_id', function(req, res, next){
-        models.Admin.findById(admin_id).then(function(admin) {
-            res.send(admin.display_name);
-        });
-    });
     
+    router.get('/logout', function(req, res) {
+        req.logout();
+        res.redirect('/');
+    });
+
+
     require('./devices')(router, passport);
     require('./text')(router);
 
@@ -88,4 +70,10 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
         return next();
     res.redirect('/login');
+}
+
+function isntLoggedIn(req, res, next) {
+    if (!req.isAuthenticated())
+        return next();
+    res.redirect('/admin');
 }

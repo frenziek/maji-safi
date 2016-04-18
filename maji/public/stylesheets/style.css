@@ -25,6 +25,12 @@ div{
     border-radius: 0.5em;
 }
 
+#top a{
+    color: white;
+    text-decoration: none;
+    
+}
+
 .fakebutton{
     -webkit-touch-callout: none;
     -webkit-user-select: none;

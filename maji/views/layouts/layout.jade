@@ -10,9 +10,11 @@ html
     #header
         ul
             li
-                img(src='/images/icon.png' height="24px")
+                a(href='/') 
+                    img(src='/images/icon.png' height="24px")
             li 
-                h1 MAJI SAFI
+                a(href='/') 
+                    h1 MAJI SAFI
             li
             li
                 if admin
@@ -21,11 +23,11 @@ html
                     p Welcome to Maji Safi!
 
             li 
-                a(href='/admins') Devices
+                a(href='/admin' class='link') Devices
             li 
                 if admin
-                    a(href='/logout') Logout
+                    a(href='/logout' class='link') Logout
                 else
-                    a(href='/login') Login
+                    a(href='/login' class='link') Login
     #bod
         block content

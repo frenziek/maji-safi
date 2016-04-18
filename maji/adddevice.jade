@@ -6,22 +6,26 @@ block head
 block content
     #main
         h2 Add a new device
-        form(action="/devices" method="post")
+        form(action="/devices/add" method="post")
             input(type="text" name="nickname" placeholder="Nickname")
             br
             input(type="text" name="phone_number" placeholder="Phone Number")
             br
+            input(type="text" name="location_x" placeholder="Latitude")
+            br
+            input(type="text" name="location_y" placeholder="Longitude")
+            br
             p Run Water Detection: 
-            input(type="checkbox" name="run_detect" value:"yes")
+            input(type="checkbox" name="run_detect" value:"run_detect")
             br
             p Run pH Test: 
-            input(type="checkbox" name="run_pH" value:"yes")
+            input(type="checkbox" name="run_pH" value:"run_pH")
             br
             p Run Turbidity Test: 
-            input(type="checkbox" name="run_turbidity" value:"yes")
+            input(type="checkbox" name="run_turbidity" value:"run_turbidity")
             br
             p Run Temperature Test: 
-            input(type="checkbox" name="run_temperature" value:"yes")
+            input(type="checkbox" name="run_temperature" value:"run_temperature")
             br
             input(type="number" name="frequency" placeholder="Daily Frequency")
             br
