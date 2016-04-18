@@ -48,8 +48,10 @@ module.exports = function(router){
         console.log('hit');
         var sender = req.body.From;
         var info = req.body.Body;
-        res.render('textus');
-       
+        res.set('Content-Type', 'text/xml');
+        res.send('<Response></Response>');
+
+
         /*models.Device.findAll({
             where: {
                 phone_number: sender.split("+1")[1],
