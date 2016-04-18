@@ -51,7 +51,7 @@ module.exports = function(router){
         res.status(200);
         res.set('Content-Type', 'text/xml');
         res.send('<Response>'+message+'</Response>');
-
+/*
         models.Device.findAll({
             where: {
                 phone_number: sender.split("+1")[1],
@@ -65,7 +65,7 @@ module.exports = function(router){
                 message = "hi user";
             };
         
-        });
+        });*/
     });
 
 
