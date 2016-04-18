@@ -68,7 +68,7 @@ module.exports = function(router){
         
     
         router.get('/textsmaybe', function(req, res, next){
-            console.log(req);
+            console.log(req.query);
             res.status(200);
             res.set('Content-Type', 'text/xml');
             res.send('<Response><Message>hi friends</Message></Response>');
