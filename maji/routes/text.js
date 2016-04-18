@@ -53,15 +53,6 @@ module.exports = function(router){
             where: {
                 phone_number: sender.split("+1")[1],
             }
-        }).then(function(devices){
-            if(devices == null || devices.length == 0){
-                message = "hi device";
-            } else if(devices.length > 1){
-
-            } else {
-                message = "hi user";
-            };
-        
         });
         
         res.status(200);
