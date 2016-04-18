@@ -5,8 +5,8 @@ block head
 
 block content
         #new
-            if !adminDevices 
-                p There's no data in that range!
+            if !results 
+                p There's no devices in that area!
             else
                 table
                     thead
@@ -22,7 +22,7 @@ block content
                             td Temp. Test
                             td Freq.
                             td  
-                        each device, i in adminDevices
+                        each device, i in results
                             tr(class=(i % 2 == 0) ? 'odd' : 'even') 
                                 td  
                                     a(href='/devices/#{device.id}') #{device.nickname}
