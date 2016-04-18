@@ -45,9 +45,12 @@ module.exports = function(router){
 
     //TEXT MESSAGE FUNCTIONALITY
     router.post('/texts/', function(req, res, next){
+        console.log('hit');
         var sender = req.body.From;
         var info = req.body.Body;
-        models.Device.findAll({
+        res.render('textus');
+       
+        /*models.Device.findAll({
             where: {
                 phone_number: sender.split("+1")[1],
             }
@@ -77,7 +80,7 @@ module.exports = function(router){
                             res.send('<Response><Message>'+""+location[0].latitude+","+location[0].longitude+'</Message></Response>');
     //                     });;
                 });
-    */       } else if(devices.length > 1){
+          } else if(devices.length > 1){
                 res.set('Content-Type', 'text/xml');
                 res.send('<Response><Message>Device duplicate error.</Message></Response>');
             } else {
@@ -96,7 +99,7 @@ module.exports = function(router){
                 });
                 console.log(test_results);
             }
-        });
+        });*/
     });
 
 
