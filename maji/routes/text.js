@@ -48,21 +48,40 @@ module.exports = function(router){
     router.get('/textsmaybe', function(req, res, next){
             var sender = req.query.From;
             var info = req.query.Body;
+            res.status(200);
+            res.set('Content-Type', 'text/xml');
+            
             models.Device.findAll({
                 where: {
                     phone_number: sender.split("+1")[1],
                 }
             }).then(function(devices){
                 if(devices == null || devices.length == 0){
-                    message = "hi device";
+                    
+                    
+                    
+                    message = "<Message>hi user</Message>";
+                    res.send('<Response>'+message+'</Response>');
                 } else if(devices.length > 1){  
-                    message = 'deuces';
+                    message = '<Message>deuces</Message>';
+                    res.send('<Response>'+message+'</Response>');
                 } else {
-                    message = "hi user";
+                    //water (1 or 0), pH, turbidity, temperature
+                    var results = info.split(",");
+                    var test_results = [];
+                    for (r in results) {
+                        var result = {};
+                        result.result = results[r],
+                        result.test_id = r,
+                        result.device_id = devices[0].id
+                        test_results.push(result);
+                    }
+                    models.TestResult.bulkCreate(test_results).then(function(result){
+                            test_results.push(r);
+                            res.send('<Response></Response>');
+                    });
+                    console.log(test_results);
                 }
-                res.status(200);
-                res.set('Content-Type', 'text/xml');
-                res.send('<Response><Message>'+message+'</Message></Response>');
             });
             
         });
@@ -99,20 +118,7 @@ module.exports = function(router){
                 res.set('Content-Type', 'text/xml');
                 res.send('<Response><Message>Device duplicate error.</Message></Response>');
             } else {
-                //water (1 or 0), pH, turbidity, temperature
-                var results = info.split(",");
-                var test_results = [];
-                for (r in results) {
-                    var result = {};
-                    result.result = results[r],
-                    result.test_id = r,
-                    result.device_id = devices[0].id
-                    test_results.push(result);
-                }
-                models.TestResult.bulkCreate(test_results).then(function(result){
-                        test_results.push(r);
-                });
-                console.log(test_results);
+               
             }
         });*/
 
