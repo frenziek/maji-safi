@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var googleMapsKey = "AIzaSyCnNV7W3U8Ge4AXiWPIrmhWZmOlClHaOo0";
 var httpAdapter = 'https';
+var models = require('../models/cereal.js');
 
 var geocoderProvider = 'google';
 var extra = {
@@ -67,10 +68,17 @@ module.exports = function(router){
             var sender = req.query.From;
             var info = req.query.Body;
             models.Device.findAll({
-            where: {
-                phone_number: sender.split("+1")[1],
-            }
-        }).then(function(devices){
+                where: {
+                    phone_number: sender.split("+1")[1],
+                }
+            }).then(function(devices){
+                if(devices == null || devices.length == 0){
+                    message = "hi device";
+                } else if(devices.length > 1){  
+                    message = 'deuces';
+                } else {
+                    message = "hi user";
+                }
                 res.status(200);
                 res.set('Content-Type', 'text/xml');
                 res.send('<Response><Message>hi friends</Message></Response>');
