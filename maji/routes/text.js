@@ -48,8 +48,10 @@ module.exports = function(router){
         console.log('hit');
         var sender = req.body.From;
         var info = req.body.Body;
+        res.status(200);
         res.set('Content-Type', 'text/xml');
         res.send('<Response></Response>');
+    });
 
 
         /*models.Device.findAll({
@@ -102,7 +104,6 @@ module.exports = function(router){
                 console.log(test_results);
             }
         });*/
-    });
 
 
     router.get('/texts/', function(req, res, next){
