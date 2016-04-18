@@ -2,7 +2,8 @@ extends layout
 
 block content
     h1 Test text a device
-    form(action="/testtext" method="post")
+    p To test a device, text its number anything to establish a connection, except a message of the format "c, #, #, #."
+    form(action="/texts/test" method="post")
         input(type="text" name="device_number" placeholder="Device Number")
         br
         input(type="text" name="Body" placeholder="Text Body")

@@ -8,7 +8,7 @@ var extra = {
     apiKey: googleMapsKey,
     formatter: null       
 };
-var twilio_number = "+17816763299";
+var twilio_number = "+17813254725";
 var geocoder = require('node-geocoder')(geocoderProvider, httpAdapter, extra);
 //test creds
 //var accountSid = 'AC74a25c39ba58c0b81f67d6504c0f0eed'; 
@@ -37,7 +37,7 @@ module.exports = function(router){
                 res.send("uh oh");
             } else{
                 console.log(message.sid); 
-                res.redirect("/testresults");
+                res.redirect("/admins");
             }
         });
     });
@@ -53,7 +53,7 @@ module.exports = function(router){
             }
         }).then(function(devices){
             if(devices == null || devices.length == 0){
-    //             geocoder.geocode(info, function(err, location){
+    /*             geocoder.geocode(info, function(err, location){
     //                 models.Device.findAll({
     //                     where:{
     //                         locationx:{
@@ -76,8 +76,8 @@ module.exports = function(router){
                             res.set('Content-Type', 'text/xml');
                             res.send('<Response><Message>'+""+location[0].latitude+","+location[0].longitude+'</Message></Response>');
     //                     });;
-    //             });
-            } else if(devices.length > 1){
+                });
+    */         } else if(devices.length > 1){
                 res.set('Content-Type', 'text/xml');
                 res.send('<Response><Message>Device duplicate error.</Message></Response>');
             } else {
@@ -99,6 +99,6 @@ module.exports = function(router){
 
 
     router.get('/texts/', function(req, res, next){
-        res.send('To text Maji Safi, sign up.');
+        res.render('textus');
     });
 }

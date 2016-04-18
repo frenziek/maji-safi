@@ -7,13 +7,11 @@ var session = require('express-session');
 var passport = require('passport');
 var flash = require('connect-flash');
 var app = express();
-
 require('./config/passport')(passport);
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -25,10 +23,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 var routes = require('./routes/index')(app, passport);
-//var texts = require('./routes/text')(app, passport);
 
-
-// catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
@@ -42,7 +37,6 @@ app.use(function(err, req, res, next) {
       error: err
     });
   });
-
 
 //module.exports = app;
 app.listen(3000,function(){
