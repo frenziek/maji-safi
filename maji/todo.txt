@@ -1,3 +1,8 @@
+-Water User
+    - if bad text, ask for better
+    - if good text, give results
+- Device comms
+    - if you get a text from the device, add to dev results
 - Data
     - Sort results by location
     - paginate results
@@ -5,7 +10,6 @@
     - INFO ON HOME PAGE
 - Admin
     - add flash messages to login and sign up pages
-    - On delete, text the device "STOP"
     - add test text function to device page
     - add a creation hook that texts the database        
         

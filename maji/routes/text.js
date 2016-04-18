@@ -21,7 +21,7 @@ var twilio = require('twilio')(accountSid, authToken);
 
 module.exports = function(router){
     router.get('/texts/test', function(req, res, next){
-        res.render('testtext');
+        res.render('texts/test');
     });
 
     router.post('/texts/test', function(req, res, next){
@@ -77,7 +77,7 @@ module.exports = function(router){
                             res.send('<Response><Message>'+""+location[0].latitude+","+location[0].longitude+'</Message></Response>');
     //                     });;
                 });
-    */         } else if(devices.length > 1){
+    */       } else if(devices.length > 1){
                 res.set('Content-Type', 'text/xml');
                 res.send('<Response><Message>Device duplicate error.</Message></Response>');
             } else {
@@ -85,14 +85,16 @@ module.exports = function(router){
                 var results = info.split(",");
                 var test_results = [];
                 for (r in results) {
-                    test_results.push(models.TestResult.create({ result: results[r], test_id: r, device_id: devices[0].id}));
+                    var result = {};
+                    result.result = results[r],
+                    result.test_id = r,
+                    result.device_id = devices[0].id
+                    test_results.push(result);
                 }
-                console.log(test_results);
-                Promise.all(test_results).then(function(results){
-                    console.log("Results updated");
-                    res.set('Content-Type', 'text/xml');
-                    res.send('<Response><Message>Results recieved.</Message></Response>');
+                models.TestResult.bulkCreate({test_results}).then(function(result){
+                        test_results.push(r);
                 });
+                console.log(test_results);
             }
         });
     });
