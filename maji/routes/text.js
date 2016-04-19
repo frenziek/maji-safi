@@ -91,22 +91,34 @@ module.exports = function(router){
                         res.send('<Response><Message>Device duplicate error.</Message></Response>');
                     } else {
                         //water (1 or 0), pH, turbidity, temperature
-                        var results = info.split(",");
-                        var test_results = [];
-                        if(results.length != 4){
-                            res.send('<Response><Message>Message formatting error.</Message></Response>');   
+                        var rates = info.split("Sample Rate:");
+                        if(info == "Texts will now stop"){
+                            console.log(info);
                         }
-                        for (r in results) {
-                            var result = {};
-                            result.result = results[r];
-                            result.test_id = r;
-                            result.device_id = devices[0].id;
-                            test_results.push(result);
+                        else if(rates[0] == ""){
+                            console.log(info);
+                        } 
+                        else if(info = "Empty Text"){
+                            console.log(info);
                         }
-                        models.TestResult.bulkCreate(test_results).then(function(result){
-                                res.send('<Response></Response>');
-                        });
-                        console.log(test_results);
+                        else{
+                            var results = info.split(",");
+                            var test_results = [];
+                            if(results.length != 4){
+                                res.send('<Response><Message>Message formatting error.</Message></Response>');   
+                            }
+                            for (r in results) {
+                                var result = {};
+                                result.result = results[r];
+                                result.test_id = r;
+                                result.device_id = devices[0].id;
+                                test_results.push(result);
+                            }
+                            models.TestResult.bulkCreate(test_results).then(function(result){
+                                    res.send('<Response></Response>');
+                            });
+                            console.log(test_results);
+                        }
                     }
                 });
             }
@@ -139,6 +151,8 @@ module.exports = function(router){
 function resultAsync(device, callback){
     var today = Math.round(new Date().getTime() / 1000);
     var yesterday = today - (24 * 3600);
+    return "good";
+    /*
     models.TestResult.findOne({
             limit: 4,
             where:{
@@ -150,4 +164,5 @@ function resultAsync(device, callback){
     }).then(function(results){
         return "good";
     });
+    */
 }
