@@ -55,6 +55,7 @@ module.exports = function(router){
                                 maps.proximitySort(location[0].latitude, location[0].longitude, devices, function(results){
                                     var rescount = 3;
                                     if(results.length < 3) rescount = results.length;
+                                    /*
                                     var yesterday = (new Date()).getDay - 1;
                                     var promises = [];
                                     for(i=0; i < rescount; i++){
@@ -71,13 +72,13 @@ module.exports = function(router){
                                                 callback(results.device.nickname, "good");
                                             });
                                         });
-                                    }
+                                    }*/
                                     console.log("RESULTS: " + results);
                                     var message = '';
-                                    Promise.all(promises).then(function(nickname, result) {
-                                        message = message + nickname + " - " + result;
-                                        res.send('<Response><Message>'+message+'</Message></Response>');
-                                    });
+                                    for(int i = 0; i < rescount; i++){ 
+                                        message = message + i + ") " + results[i].device.nickname + "\n";
+                                    }
+                                    res.send('<Response><Message>'+message+'</Message></Response>');
                                 });  
                             }
                         });
