@@ -52,37 +52,48 @@ module.exports = function(router){
                                 console.log("test");
                                 res.send('<Response><Message>Oops! That does not look like a valid location. Please retry.</Message></Response>');
                             } else {
-                                maps.proximitySort(location[0].latitude, location[0].longitude, devices, function(results){
-                                    var rescount = 3;
-                                    if(results.length < 3) rescount = results.length;
-                                    /*
-                                    var yesterday = (new Date()).getDay - 1;
-                                    var promises = [];
-                                    for(i=0; i < rescount; i++){
-                                        promises.push( function(){
-                                            models.TestResult.findOne({
-                                                    limit: 4,
-                                                    where:{
-                                                        device_id: results.device.id,
-                                                        time: {
-                                                            $gte: yesterday
-                                                        },
-                                                    }
-                                                }).then(function(results){
-                                                callback(results.device.nickname, "good");
-                                            });
-                                        });
-                                    }*/
-                                    console.log(devices);
-                                    console.log(rescount + " RESULTS: " + results);
-                                    var message = 'Best devices: \n';
-                                    if(results.length==0) 
-                                        message = "Oh no! There are no devices near you!";
-                                    for(var i = 0; i < rescount; i++){ 
-                                        message = message + i + ") " + results[i].device.nickname + "\n";
+                                models.Device.findAll({
+                                    where: {
+                                        location_x: {
+                                            $between: [location[0].latitude - 5, location[0].latitude + 5],
+                                        },
+                                        location_y: {
+                                            $between: [location[0].longitude - 5, location[0].longitude + 5], 
+                                        }
                                     }
-                                    res.send('<Response><Message>'+message+'</Message></Response>');
-                                });  
+                                }).then(function(near_devices){
+                                    maps.proximitySort(location[0].latitude, location[0].longitude, near_devices, function(results){
+                                        var rescount = 3;
+                                        if(results.length < 3) rescount = results.length;
+                                        /*
+                                        var yesterday = (new Date()).getDay - 1;
+                                        var promises = [];
+                                        for(i=0; i < rescount; i++){
+                                            promises.push( function(){
+                                                models.TestResult.findOne({
+                                                        limit: 4,
+                                                        where:{
+                                                            device_id: results.device.id,
+                                                            time: {
+                                                                $gte: yesterday
+                                                            },
+                                                        }
+                                                    }).then(function(results){
+                                                    callback(results.device.nickname, "good");
+                                                });
+                                            });
+                                        }*/
+                                        console.log(near_devices);
+                                        console.log(rescount + " RESULTS: " + results);
+                                        var message = 'Best devices: \n';
+                                        if(results.length==0) 
+                                            message = "Oh no! There are no devices near you!";
+                                        for(var i = 0; i < rescount; i++){ 
+                                            message = message + i + ") " + results[i].device.nickname + "\n";
+                                        }
+                                        res.send('<Response><Message>'+message+'</Message></Response>');
+                                    });  
+                                });
                             }
                         });
                     } else if(devices.length > 1){  
