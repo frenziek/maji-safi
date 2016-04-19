@@ -51,6 +51,7 @@ module.exports = function(router){
                             if(err || location.length==0){
                                 res.send('<Response><Message>Oops! That does not look like a valid location. Please retry.</Message></Response>');
                             }
+                            console.log(location.length==0)
                             maps.proximitySort(location[0].latitude, location[0].longitude, devices, function(results){
                                 var rescount = 3;
                                 if(results.length < 3) rescount = results.length;
