@@ -68,7 +68,6 @@ module.exports = function(router){
                                         if(rescount == 0) 
                                             res.send('<Response><Message>Oh no! There are no devices near you!</Message></Response>');
                                         else{
-                                            var yesterday = (new Date()).getDay - 1;
                                             var promises = [];
                                             for(var i=0; i < rescount; i++){
                                                 promises.push(resultAsync(results[i].device)); 
@@ -137,6 +136,7 @@ module.exports = function(router){
 }
 
 function resultAsync(device, callback){
+    var yesterday = (new Date()).getDay - 1;
     models.TestResult.findOne({
             limit: 4,
             where:{
