@@ -139,8 +139,6 @@ module.exports = function(router){
 function resultAsync(device, callback){
     var today = Math.round(new Date().getTime() / 1000);
     var yesterday = today - (24 * 3600);
-    return "good";
-    /*
     models.TestResult.findOne({
             limit: 4,
             where:{
@@ -150,7 +148,6 @@ function resultAsync(device, callback){
                 },
             }
     }).then(function(results){
-        console.log(device.nickname + ": good");
-        return device.nickname + ": good";
-    });*/
+        return "good";
+    });
 }
