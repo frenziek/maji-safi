@@ -136,7 +136,8 @@ module.exports = function(router){
 }
 
 function resultAsync(device, callback){
-    var yesterday = (new Date()).getDay - 1;
+    var today = Math.round(new Date().getTime() / 1000);
+    var yesterday = ts - (24 * 3600);
     models.TestResult.findOne({
             limit: 4,
             where:{
