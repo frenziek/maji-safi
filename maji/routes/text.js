@@ -38,7 +38,6 @@ module.exports = function(router){
             } else { 
                 var sender = req.query.From;
                 var info = req.query.Body;
-                console.log(info);
                 res.status(200);
                 res.set('Content-Type', 'text/xml');
 
@@ -47,17 +46,12 @@ module.exports = function(router){
                         phone_number: sender.split("+1")[1],
                     }
                 }).then(function(devices){
-                    console.log("recieved text");
                     if(devices == null || devices.length == 0){
-                        console.log("not from a device");
                         maps.geocoder.geocode(info, function(err, location){
                             if(err || !location){
-                                console.log("not a real place.");
                                 res.send('<Response><Message>Oops! That does not look like a valid location. Please retry.</Message></Response>');
                             }
-                            console.log("real place");
                             maps.proximitySort(location[0].latitude, location[0].longitude, devices, function(results){
-                                console.log("sorted.");
                                 var rescount = 3;
                                 if(results.length < 3) rescount = results.length;
                                 var yesterday = (new Date()).getDay - 1;
@@ -68,7 +62,7 @@ module.exports = function(router){
                                 console.log("RESULTS: " + results);
                                 var message = '';
                                 Promise.all(promises).then(function(nickname, result) {
-                                    message = message + nickame + " - " + result;
+                                    message = message + nickname + " - " + result;
                                     res.send('<Response><Message>'+message+'</Message></Response>');
                                 });
                             });                        
