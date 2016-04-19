@@ -38,6 +38,7 @@ module.exports = function(router){
             } else { 
                 var sender = req.query.From;
                 var info = req.query.Body;
+                console.log(info);
                 res.status(200);
                 res.set('Content-Type', 'text/xml');
 
