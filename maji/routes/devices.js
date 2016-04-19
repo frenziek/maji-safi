@@ -40,7 +40,7 @@ module.exports = function(router, passport){
 
     router.post('/devices/add', isLoggedIn, function(req, res){
         var admin = req.user;
-        var device = req.body;
+        var info = req.body;
         models.Device.create({ 
                 nickname: input.nickname,
                 phone_number: input.phone_number,
