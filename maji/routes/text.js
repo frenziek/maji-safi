@@ -51,34 +51,35 @@ module.exports = function(router){
                             if(err || location.length==0){
                                 console.log("test");
                                 res.send('<Response><Message>Oops! That does not look like a valid location. Please retry.</Message></Response>');
-                            }
-                            maps.proximitySort(location[0].latitude, location[0].longitude, devices, function(results){
-                                var rescount = 3;
-                                if(results.length < 3) rescount = results.length;
-                                var yesterday = (new Date()).getDay - 1;
-                                var promises = [];
-                                for(i=0; i < rescount; i++){
-                                    promises.push( function(){
-                                        models.TestResult.findOne({
-                                                limit: 4,
-                                                where:{
-                                                    device_id: results.device.id,
-                                                    time: {
-                                                        $gte: yesterday
-                                                    },
-                                                }
-                                            }).then(function(results){
-                                            callback(results.device.nickname, "good");
+                            } else {
+                                maps.proximitySort(location[0].latitude, location[0].longitude, devices, function(results){
+                                    var rescount = 3;
+                                    if(results.length < 3) rescount = results.length;
+                                    var yesterday = (new Date()).getDay - 1;
+                                    var promises = [];
+                                    for(i=0; i < rescount; i++){
+                                        promises.push( function(){
+                                            models.TestResult.findOne({
+                                                    limit: 4,
+                                                    where:{
+                                                        device_id: results.device.id,
+                                                        time: {
+                                                            $gte: yesterday
+                                                        },
+                                                    }
+                                                }).then(function(results){
+                                                callback(results.device.nickname, "good");
+                                            });
                                         });
+                                    }
+                                    console.log("RESULTS: " + results);
+                                    var message = '';
+                                    Promise.all(promises).then(function(nickname, result) {
+                                        message = message + nickname + " - " + result;
+                                        res.send('<Response><Message>'+message+'</Message></Response>');
                                     });
-                                }
-                                console.log("RESULTS: " + results);
-                                var message = '';
-                                Promise.all(promises).then(function(nickname, result) {
-                                    message = message + nickname + " - " + result;
-                                    res.send('<Response><Message>'+message+'</Message></Response>');
-                                });
-                            });                        
+                                });  
+                            }
                         });
                     } else if(devices.length > 1){  
                         res.send('<Response><Message>Device duplicate error.</Message></Response>');
