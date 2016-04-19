@@ -44,7 +44,7 @@ Device.belongsTo(Admin);
 Device.beforeCreate(function(device, options){
     var message = 'C ';
     message = message + device.sampling_rate + ",";
-    message = message + device.messaging_rate;
+    message = message + device.messaging_rate + ",";
     twilio.messages.create({ 
             to: device.phone_number, 
             from: twilio_number, 
@@ -57,7 +57,7 @@ Device.beforeCreate(function(device, options){
 Device.beforeUpdate(function(device, options){
     var message = 'C ';
     message = message + device.sampling_rate + ",";
-    message = message + device.messaging_rate;
+    message = message + device.messaging_rate+ ",";
     twilio.messages.create({ 
             to: device.phone_number, 
             from: twilio_number, 
