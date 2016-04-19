@@ -72,6 +72,10 @@ body{
     background-color: lightgrey;
 }
 
+#new{
+    padding: 8px;
+}
+
 #main{
     width: 40%;
     margin: 10px auto 10px auto;
@@ -118,4 +122,14 @@ body{
 
 #flash{
     background-color: lightpink;    
+}
+
+.textmini{
+    float:left;
+    margin: 15px;
+}
+
+.textmini2{
+    float:right;
+    margin: 15px;
 }

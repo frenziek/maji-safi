@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var models = require('../models/cereal.js');
 var maps = require('../config/maps.js');
+var Promise = require("bluebird");
 
 var twilio = require('../config/twilio.js').twilio;
 var twilio_number = require('../config/twilio.js').number;
@@ -51,7 +52,19 @@ module.exports = function(router){
                                 res.send('<Response><Message>Oops! That does not look like a valid location. Please retry.</Message></Response>');
                             }
                             maps.proximitySort(location[0].latitude, location[0].longitude, devices, function(results){
-                                res.send('<Response><Message>'+results[0]+'</Message></Response>');
+                                var rescount = 3;
+                                if(results.length < 3) rescount = results.length;
+                                var yesterday = (new Date()).getDay - 1;
+                                var promises = [];
+                                for(i=0; i < rescount; i++){
+                                    promises.push(resultAsync(results[i].device.id, results[i].device.nickname));
+                                }
+                                
+                                var message = '';
+                                Promise.all(promises).then(function(nickname, result) {
+                                    message = message + nickame + " - " + result;
+                                    res.send('<Response><Message>'+message+'</Message></Response>');
+                                });
                             });                        
                         });
                     } else if(devices.length > 1){  
@@ -101,4 +114,18 @@ module.exports = function(router){
         });
     });
 
+}
+
+function resultAsync(id, nickname, callback){
+    models.TestResult.findOne({
+        limit: 4,
+        where:{
+            device_id: results.device.id,
+            time: {
+                $gte: yesterday
+            },
+        }
+    }).then(function(results){
+        callback(nickname, "good");
+    });
 }

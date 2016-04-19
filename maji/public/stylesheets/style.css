@@ -120,11 +120,16 @@ div{
     border: none;
     font-size: 1.2rem;
 }
-#submit{
+#submitid{
     color: white;
+    font-size: 1rem;
     background-color: rgba(13,44,59,0.8);
-    padding: 0.5em;
-/*     display: block; */
+    padding: 0.75rem;
+    border:0 none;
+    cursor:pointer;
+    -moz-border-radius: 2em;
+    -webkit-border-radius: 2em;
+    border-radius: 2em;
     margin: auto;
 }
 
@@ -132,6 +137,9 @@ div{
     background-color: #0d2c3b;
     margin: 1.5em auto 1.5em auto;
     padding: 0.3em;
+    -moz-border-radius: 2em;
+    -webkit-border-radius: 2em;
+    border-radius: 2em;
     width: 6em;
 }
 
