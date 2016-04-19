@@ -1,23 +1,32 @@
 var models = require('../models/cereal.js');
 var Promise = require('bluebird');
+var maps = require('../config/maps.js');
 
 module.exports = function(router, passport){
     router.get('/', function(req, res, next) {
         res.render('index', { admin : req.user});
     });
 
-    router.get('/data', function(req, res, next){
+  /*  router.get('/data', function(req, res, next){
         res.render('data', req.body);
-    });
+    }); */
 
     //DATA ROUTE
     router.post('/data', function(req, res, next){
         var query = req.body;
         models.Device.findAll()
-        .then(function(results){
-            //need to sort by location and paginate
-            res.render('data', {
-                results: results
+        .then(function(devices){
+            maps.geocoder.geocode(query.location, function(err, location){
+                if(location.length == 0){
+                    req.flash('searchError', "Oops! We couldn't find that location!");
+                    res.redirect('/data');
+                }
+                maps.proximitySort(location[0].latitude, location[0].longitude, devices, function(results){
+                    res.render('data', {
+                        search: query,
+                        results: results
+                    });
+                });
             });
         });
     });
@@ -38,17 +47,19 @@ module.exports = function(router, passport){
     })
 
     router.get('/login', isntLoggedIn, function(req, res, next) {
-        res.render('admin/login');
+        res.render('admin/login',{ 
+            messages: req.flash('loginMessage'), 
+        });
     });
 
     router.post('/login',  passport.authenticate('local-login', {
             successRedirect : '/admin', 
             failureRedirect : '/login', 
-            failureFlash : true 
+            failureFlash : true
             }));
 
     router.get('/register', isntLoggedIn, function(req, res, next) {
-        res.render('admin/register');
+        res.render('admin/register', { messages: req.flash('signupMessage') });
     });
 
     router.post('/register', passport.authenticate('local-signup', {
@@ -61,7 +72,6 @@ module.exports = function(router, passport){
         req.logout();
         res.redirect('/');
     });
-
 
     require('./devices')(router, passport);
     require('./text')(router);

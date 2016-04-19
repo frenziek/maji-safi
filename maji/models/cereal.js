@@ -35,38 +35,16 @@ var Device = sequelize.define('Device', {
     location_x: { type: Sequelize.STRING, allowNull: true, defaultValue: '42.3732' },
     location_y: { type: Sequelize.STRING, allowNull: true, defaultValue: '-72.5199' },
     registered:  { type: Sequelize.DATE, defaultValue: Sequelize.NOW },
-    run_detect: {type: Sequelize.BOOLEAN},
-    run_pH: {type: Sequelize.BOOLEAN},
-    run_turbidity: {type: Sequelize.BOOLEAN},
-    run_temperature: {type: Sequelize.BOOLEAN},
-    frequency: {type: Sequelize.INTEGER, defaultValue: 5}    
+    sampling_rate:  {type: Sequelize.INTEGER, defaultValue: 5},
+    messaging_rate: {type: Sequelize.INTEGER, defaultValue: 5}    
 });
 
 Device.belongsTo(Admin);
 
 Device.beforeCreate(function(device, options){
-    var message = 'c ';
-    if(device.run_detect){
-        message = message + "1,"   
-    } else {
-        message = message + "0,"   
-    }
-    if(device.run_pH){
-        message = message + "1,"   
-    } else {
-        message = message + "0,"   
-    }
-    if(device.run_turbidity){
-        message = message + "1,"   
-    } else {
-        message = message + "0,"   
-    }
-    if(device.run_temperature){
-        message = message + "1,"   
-    } else {
-        message = message + "0,"   
-    }
-    message = message + device.frequency;
+    var message = 'C ';
+    message = message + device.sampling_rate + ",";
+    message = message + device.messaging_rate;
     twilio.messages.create({ 
             to: device.phone_number, 
             from: twilio_number, 
@@ -77,28 +55,9 @@ Device.beforeCreate(function(device, options){
 });
 
 Device.beforeUpdate(function(device, options){
-    var message = 'c ';
-    if(device.run_detect){
-        message = message + "1,"   
-    } else {
-        message = message + "0,"   
-    }
-    if(device.run_pH){
-        message = message + "1,"   
-    } else {
-        message = message + "0,"   
-    }
-    if(device.run_turbidity){
-        message = message + "1,"   
-    } else {
-        message = message + "0,"   
-    }
-    if(device.run_temperature){
-        message = message + "1,"   
-    } else {
-        message = message + "0,"   
-    }
-    message = message + device.frequency;
+    var message = 'C ';
+    message = message + device.sampling_rate + ",";
+    message = message + device.messaging_rate;
     twilio.messages.create({ 
             to: device.phone_number, 
             from: twilio_number, 

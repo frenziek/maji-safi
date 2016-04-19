@@ -68,11 +68,8 @@ module.exports = function(router, passport){
                 phone_number: input.phone_number,
                 location_x: input.location_x,
                 location_y: input.location_y,
-                run_detect: input.run_detect,
-                run_pH: input.run_pH, 
-                run_turbidity: input.run_turbidity,
-                run_temperature: input.run_temperature,
-                frequency: input.frequency,
+                sampling_rate: input.sampling_rate,
+                messaging_rate: input.messaging_rate,
             }).then(function(dev){
                 res.redirect('/devices/'+dev.id);         
             });

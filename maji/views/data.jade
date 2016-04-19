@@ -5,6 +5,7 @@ block head
 
 block content
         #new
+            p Searched for devices within #{search.radius} km of #{search.location}.
             if !results 
                 p There are no devices in that area!
             else
@@ -16,32 +17,16 @@ block content
                             td Nickname
                             td Phone #
                             td Location
-                            td Sensor
-                            td pH Test
-                            td Turb. Test
-                            td Temp. Test
-                            td Freq.
-                            td  
-                        each device, i in results
-                            tr(class=(i % 2 == 0) ? 'odd' : 'even') 
-                                td  
-                                    a(href='/devices/#{device.id}') #{device.nickname}
-                                td  #{device.phone_number}
-                                td  #{device.location_x}, #{device.location_y}
-                                if device.run_detect
-                                    td Yes
-                                else
-                                    td no
-                                if device.run_pH
-                                    td Yes
-                                else
-                                    td no
-                                if device.run_turbidity
-                                    td Yes
-                                else
-                                    td no
-                                if device.run_temperature
-                                    td Yes
-                                else
-                                    td no
-                                td  #{device.frequency}
+                            td Sampling Rate
+                            td Messaging Rate
+                            td Distance (km)
+                        each result, i in results
+                            if(result.distance < parseFloat(search.radius) )
+                                tr(class=(i % 2 == 0) ? 'odd' : 'even') 
+                                    td  
+                                        a(href='/devices/#{result.device.id}') #{result.device.nickname}
+                                    td  #{result.device.phone_number}
+                                    td  #{result.device.location_x}, #{result.device.location_y}
+                                    td  #{result.device.sampling_rate}
+                                    td  #{result.device.messaging_rate}
+                                    td  #{result.distance}

@@ -4,80 +4,70 @@ block head
     title Device: #{device.nickname}
 
 block content
+    #info 
         if admin
             form(action="/devices/update/"+device.id method="post")
                 table(class='update_form')
-                    tr
-                        td Nickname
-                        td(colspan='2') 
-                            input(type="text" name="nickname" value=device.nickname)
-                    tr
-                        td Phone number:
-                        td(colspan='2')
-                            input(type="text" name="phone_number" value=device.phone_number)
-                    tr
-                        td Location
-                        td 
-                            input(type="text" name="location_x" value=device.location_x)
-                        td
-                            input(type="text" name="location_y" value=device.location_y)
-                    tr
-                        td Frequency
-                        td(colspan='2') 
-                            input(type="number" name="frequency" value=device.frequency)
-                    tr
-                        td Water Detection Test
-                        td 
-                            input(type="checkbox" name="run_detect" value=device.run_detect)
-                    tr
-                        td pH Test
-                        td 
-                            input(type="checkbox" name="run_pH" value=device.run_pH)
-                    tr
-                        td Turbidity Test
-                        td 
-                            input(type="checkbox" name="run_turbidity" value=device.run_turbidity)
-                    tr
-                        td Temperature Test
-                        td 
-                            input(type="checkbox" name="run_temperature" value=device.run_temperature)
-                    tr 
-                        td(colspan='2')
-                            input(type="submit" value="Update Device")
+                    thead
+                        tr: th(colspan='2') Update Settings
+                    tbody
+                        tr
+                            td Nickname
+                            td
+                                input(type="text" name="nickname" value=device.nickname)
+                        tr
+                            td Phone number:
+                            td
+                                input(type="text" name="phone_number" value=device.phone_number)
+                        tr
+                            td Latitude
+                            td 
+                                input(type="text" name="location_x" value=device.location_x)
+                        tr
+                            td Longitude
+                            td
+                                input(type="text" name="location_y" value=device.location_y)
+                        tr
+                            td Sampling Rate
+                            td
+                                input(type="number" name="sampling_rate" value=device.sampling_rate)
+                        tr
+                            td Messaging Rate
+                            td 
+                                input(type="number" name="messaging_rate" value=device.messaging_rate)
+                        tr 
+                            td
+                                input(type="submit" value="Update Device")
         else 
             table
                 tr
                     td Location
                     td #{device.location_x}, #{device.location_y}
                 tr
-                    td Current Update Frequency
-                    td #{device.frequency}
+                    td Sampling Rate
+                    td #{device.sampling_rate}
                 tr
-                    td Water Detection Test 
-                    if device.run_detect
-                        td Running
-                    else
-                        td Not Running
-                tr
-                    td pH Test 
-                    if device.run_pH
-                        td Running
-                    else
-                        td Not Running
-                tr
-                    td Turbidity Test 
-                    if device.run_turbidity
-                        td Running
-                    else
-                        td Not Running
-                tr
-                    td Temperature Test 
-                    if device.run_temperature
-                        td Running
-                    else
-                        td Not Running
+                    td Messaging Rate 
+                    td #{device.messaging_rate}
 
 
+    #map
+        iframe(type='text/html' width='400' height='400'
+        src="https://www.google.com/maps/embed/v1/place"+
+        "?key=AIzaSyCBScX13K21yXDKe5131QXkwhLskNCQi6w"+
+        "&q=" + device.location_x  +"," + device.location_y
+        +"&zoom=17&maptype=satellite" frameborder='0')
+
+    #text
+        h2 Send the device a test text
+        form(action="/texts/test" method="post")
+            input(type="text" name="Body" placeholder="Text Body")
+            br
+            div
+                input(type="submit" value="Send")
+
+    
+    #results
         table
             thead
                 tr: th(colspan='3') Test Results

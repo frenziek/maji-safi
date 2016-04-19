@@ -14,11 +14,8 @@ block content
                     td Nickname
                     td Phone #
                     td Location
-                    td Water Detection
-                    td pH Test
-                    td Turb. Test
-                    td Temp. Test
-                    td Freq.
+                    td Sampling Rate
+                    td Messaging Rate
                     td  
                 each device, i in adminDevices
                     tr(class=(i % 2 == 0) ? 'odd' : 'even') 
@@ -26,22 +23,8 @@ block content
                             a(href='/devices/#{device.id}') #{device.nickname}
                         td  #{device.phone_number}
                         td  #{device.location_x}, #{device.location_y}
-                        if device.run_detect
-                            td Yes
-                        else
-                            td no
-                        if device.run_pH
-                            td Yes
-                        else
-                            td no
-                        if device.run_turbidity
-                            td Yes
-                        else
-                            td no
-                        if device.run_temperature
-                            td Yes
-                        else
-                            td no
-                        td  #{device.frequency}
+                        td  #{device.sampling_rate}
+                        td  #{device.messaging_rate}
+
                         td 
                             a(href='devices/delete/' + device.id) Delete

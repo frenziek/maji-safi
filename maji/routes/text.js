@@ -1,15 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var googleMapsKey = "AIzaSyCnNV7W3U8Ge4AXiWPIrmhWZmOlClHaOo0";
-var httpAdapter = 'https';
 var models = require('../models/cereal.js');
+var maps = require('../config/maps.js');
 
-var geocoderProvider = 'google';
-var extra = {
-    apiKey: googleMapsKey,
-    formatter: null       
-};
-var geocoder = require('node-geocoder')(geocoderProvider, httpAdapter, extra);
 var twilio = require('../config/twilio.js').twilio;
 var twilio_number = require('../config/twilio.js').number;
 
@@ -36,8 +29,6 @@ module.exports = function(router){
         });
     });
 
-
-    //TEXT MESSAGE FUNCTIONALITY
     router.get('/texts', function(req, res, next){
             if(!req.query.From){
                 res.render("texts/textus");   
@@ -53,7 +44,7 @@ module.exports = function(router){
                     }
                 }).then(function(devices){
                     if(devices == null || devices.length == 0){
-                        geocoder.geocode(info, function(err, location){
+                        maps.geocoder.geocode(info, function(err, location){
                             var x = location[0];
                             var y = location[1];
                         });
@@ -65,6 +56,9 @@ module.exports = function(router){
                         //water (1 or 0), pH, turbidity, temperature
                         var results = info.split(",");
                         var test_results = [];
+                        if(results.length != 4){
+                            res.send('<Response><Message>Message formatting error.</Message></Response>');   
+                        }
                         for (r in results) {
                             var result = {};
                             result.result = results[r];

@@ -91,3 +91,31 @@ body{
     font-weight: bold;
 }
 
+#info{
+    display: inline;
+    float: left;
+    margin: 15px;
+    width: 50%;
+}
+
+#info table{
+    width: inherit;
+}
+
+
+#map{
+    display: inline;
+    float: right;
+    margin: 15px;
+}
+
+#text{
+    float: left;
+    margin: 15px;
+    width: 50%;  
+    text-align: center; 
+}
+
+#flash{
+    background-color: lightpink;    
+}
