@@ -73,11 +73,12 @@ module.exports = function(router){
                                                 promises.push(resultAsync(results[i].device)); 
                                             }
 
-                                            Promise.all(promises).then(function(best_devices){
-                                                console.log("RESULTS: " + best_devices);
+                                            Promise.all(promises).then(function(deviceGrades){
+                                                console.log("RESULTS: " + deviceGrades);
                                                 var message = 'Best devices: \n';
-                                                for(var i = 0; i < best_devices.length; i++){ 
-                                                    message = message + (i+1) + ") " + best_devices[i] + "\n";
+                                                for(var i = 0; i < rescount; i++){ 
+                                                    message = message + (i+1) + ") " + results[i].device.nickname +
+                                                        ": " + deviceGrades[i] + "\n";
                                                 }
                                                 res.send('<Response><Message>'+message+'</Message></Response>');
                                             });  
@@ -136,9 +137,10 @@ module.exports = function(router){
 }
 
 function resultAsync(device, callback){
-    return device.nickname + ": good";/*
     var today = Math.round(new Date().getTime() / 1000);
     var yesterday = today - (24 * 3600);
+    return "good";
+    /*
     models.TestResult.findOne({
             limit: 4,
             where:{
