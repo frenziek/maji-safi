@@ -147,6 +147,7 @@ function resultAsync(device, callback){
                 },
             }
         }).then(function(results){
-        return device.nickname + ": good";
+            console.log(device.nickname + ": good");
+            return device.nickname + ": good";
     });
 }
