@@ -75,7 +75,7 @@ module.exports = function(router){
                                     }*/
                                     console.log("RESULTS: " + results);
                                     var message = '';
-                                    for(int i = 0; i < rescount; i++){ 
+                                    for(var i = 0; i < rescount; i++){ 
                                         message = message + i + ") " + results[i].device.nickname + "\n";
                                     }
                                     res.send('<Response><Message>'+message+'</Message></Response>');
