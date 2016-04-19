@@ -42,15 +42,12 @@ module.exports = function(router, passport){
         var admin = req.user;
         var device = req.body;
         models.Device.create({ 
-                nickname: device.nickname,
-                phone_number: device.phone_number,
-                location_x: device.location_x,
-                location_y: device.location_y,
-                run_detect: device.run_detect,
-                run_pH: device.run_pH, 
-                run_turbidity: device.run_turbidity,
-                run_temperature: device.run_temperature,
-                frequency: device.frequency,
+                nickname: input.nickname,
+                phone_number: input.phone_number,
+                location_x: parseFloat(input.location_x),
+                location_y: parseFloat(input.location_y),
+                sampling_rate: input.sampling_rate,
+                messaging_rate: input.messaging_rate,
                 AdminId: admin.id,
         })
         .then(function(dev){
@@ -66,8 +63,8 @@ module.exports = function(router, passport){
             device.update({ 
                 nickname: input.nickname,
                 phone_number: input.phone_number,
-                location_x: input.location_x,
-                location_y: input.location_y,
+                location_x: parseFloat(input.location_x),
+                location_y: parseFloat(input.location_y),
                 sampling_rate: input.sampling_rate,
                 messaging_rate: input.messaging_rate,
             }).then(function(dev){

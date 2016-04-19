@@ -32,8 +32,8 @@ var Device = sequelize.define('Device', {
     id: { type: Sequelize.UUID, primaryKey: true, defaultValue: Sequelize.UUIDV4()},
     nickname: { type: Sequelize.STRING},
     phone_number: { type: Sequelize.STRING, allowNull: false },
-    location_x: { type: Sequelize.STRING, allowNull: true, defaultValue: '42.3732' },
-    location_y: { type: Sequelize.STRING, allowNull: true, defaultValue: '-72.5199' },
+    location_x: { type: Sequelize.FLOAT, allowNull: true, defaultValue: 42.3732 },
+    location_y: { type: Sequelize.FLOAT, allowNull: true, defaultValue: -72.5199 },
     registered:  { type: Sequelize.DATE, defaultValue: Sequelize.NOW },
     sampling_rate:  {type: Sequelize.INTEGER, defaultValue: 5},
     messaging_rate: {type: Sequelize.INTEGER, defaultValue: 5}    
