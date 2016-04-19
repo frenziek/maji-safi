@@ -3,6 +3,8 @@ var sequelize = new Sequelize("postgres://postgres:kaitlin1@localhost:5432/sdp")
     //process.env.SDP_DATABASE_URL);
 var Promise = require("bluebird");
 var bcrypt = require('bcrypt-nodejs');
+var twilio = require('../config/twilio.js').twilio;
+var twilio_number = require('../config/twilio.js').number;
 
 var Admin = sequelize.define('Admin', {
     id: { type: Sequelize.UUID, primaryKey: true, defaultValue: Sequelize.UUIDV4()},
@@ -41,6 +43,80 @@ var Device = sequelize.define('Device', {
 });
 
 Device.belongsTo(Admin);
+
+Device.beforeCreate(function(device, options){
+    var message = 'c ';
+    if(device.run_detect){
+        message = message + "1,"   
+    } else {
+        message = message + "0,"   
+    }
+    if(device.run_pH){
+        message = message + "1,"   
+    } else {
+        message = message + "0,"   
+    }
+    if(device.run_turbidity){
+        message = message + "1,"   
+    } else {
+        message = message + "0,"   
+    }
+    if(device.run_temperature){
+        message = message + "1,"   
+    } else {
+        message = message + "0,"   
+    }
+    message = message + device.frequency;
+    twilio.messages.create({ 
+            to: device.phone_number, 
+            from: twilio_number, 
+            body: message,   
+        }, function(err, message) { 
+            if(err) console.log(err);
+    });
+});
+
+Device.beforeUpdate(function(device, options){
+    var message = 'c ';
+    if(device.run_detect){
+        message = message + "1,"   
+    } else {
+        message = message + "0,"   
+    }
+    if(device.run_pH){
+        message = message + "1,"   
+    } else {
+        message = message + "0,"   
+    }
+    if(device.run_turbidity){
+        message = message + "1,"   
+    } else {
+        message = message + "0,"   
+    }
+    if(device.run_temperature){
+        message = message + "1,"   
+    } else {
+        message = message + "0,"   
+    }
+    message = message + device.frequency;
+    twilio.messages.create({ 
+            to: device.phone_number, 
+            from: twilio_number, 
+            body: message,   
+        }, function(err, message) { 
+            if(err) console.log(err);
+    });
+});
+
+Device.beforeDestroy(function(device, options){
+    twilio.messages.create({ 
+            to: device.phone_number, 
+            from: twilio_number, 
+            body: "STOP",   
+        }, function(err, message) { 
+            if(err) console.log(err);
+    });
+});
 
 
 var Test = sequelize.define('Test', {

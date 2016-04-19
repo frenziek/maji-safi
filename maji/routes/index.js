@@ -16,7 +16,9 @@ module.exports = function(router, passport){
         models.Device.findAll()
         .then(function(results){
             //need to sort by location and paginate
-            res.render('data', results);
+            res.render('data', {
+                results: results
+            });
         });
     });
 

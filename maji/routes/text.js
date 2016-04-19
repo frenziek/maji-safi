@@ -9,16 +9,9 @@ var extra = {
     apiKey: googleMapsKey,
     formatter: null       
 };
-var twilio_number = "+17813254725";
 var geocoder = require('node-geocoder')(geocoderProvider, httpAdapter, extra);
-//test creds
-//var accountSid = 'AC74a25c39ba58c0b81f67d6504c0f0eed'; 
-//var authToken = 'c9d73afc6b77cdec51431bfde8245b82'; 
-//live creds
-var accountSid = 'AC5c6190a7f3e77af507fe032caee15cf9';
-var authToken = '5653c3e61293576839a0f6770eb003f9';
-//require the Twilio module and create a REST client 
-var twilio = require('twilio')(accountSid, authToken); 
+var twilio = require('../config/twilio.js').twilio;
+var twilio_number = require('../config/twilio.js').number;
 
 module.exports = function(router){
     router.get('/texts/test', function(req, res, next){
@@ -45,81 +38,46 @@ module.exports = function(router){
 
 
     //TEXT MESSAGE FUNCTIONALITY
-    router.get('/textsmaybe', function(req, res, next){
-            var sender = req.query.From;
-            var info = req.query.Body;
-            res.status(200);
-            res.set('Content-Type', 'text/xml');
-            
-            models.Device.findAll({
-                where: {
-                    phone_number: sender.split("+1")[1],
-                }
-            }).then(function(devices){
-                if(devices == null || devices.length == 0){
-                    
-                    
-                    
-                    message = "<Message>hi user</Message>";
-                    res.send('<Response>'+message+'</Response>');
-                } else if(devices.length > 1){  
-                    res.send('<Response><Message>Device duplicate error.</Message></Response>');
-                } else {
-                    //water (1 or 0), pH, turbidity, temperature
-                    var results = info.split(",");
-                    var test_results = [];
-                    for (r in results) {
-                        var result = {};
-                        result.result = results[r];
-                        result.test_id = r;
-                        result.device_id = devices[0].id;
-                        test_results.push(result);
+    router.get('/texts', function(req, res, next){
+            if(!req.query.From){
+                res.render("texts/textus");   
+            } else { 
+                var sender = req.query.From;
+                var info = req.query.Body;
+                res.status(200);
+                res.set('Content-Type', 'text/xml');
+
+                models.Device.findAll({
+                    where: {
+                        phone_number: sender.split("+1")[1],
                     }
-                    models.TestResult.bulkCreate(test_results).then(function(result){
-                            res.send('<Response></Response>');
-                    });
-                    console.log(test_results);
-                }
-            });
-            
-        });
-
-  //  });
-
-
-            
-    /*             geocoder.geocode(info, function(err, location){
-    //                 models.Device.findAll({
-    //                     where:{
-    //                         locationx:{
-    //                             $gt: location[0].latitude -1,
-    //                             $lt: location[0].latitude +1
-    //                         },
-    //                         locationy:{
-    //                             $gt: location[0].longitude -1,
-    //                             $lt: location[0].longitude +1
-    //                         }
-    //                     }
-    //                     }).then(function(devices){
-    //                        var response; 
-    //                         if(devices.length < 3){
-    //                             for(d in devices){
-    //                                 response = response + " " + d + ". " + devices[d];
-    //                             }
-    //                        }
-    //                        
-                            res.set('Content-Type', 'text/xml');
-                            res.send('<Response><Message>'+""+location[0].latitude+","+location[0].longitude+'</Message></Response>');
-    //                     });;
+                }).then(function(devices){
+                    if(devices == null || devices.length == 0){
+                        geocoder.geocode(info, function(err, location){
+                            var x = location[0];
+                            var y = location[1];
+                        });
+                        message = "<Message>hi user</Message>";
+                        res.send('<Response>'+message+'</Response>');
+                    } else if(devices.length > 1){  
+                        res.send('<Response><Message>Device duplicate error.</Message></Response>');
+                    } else {
+                        //water (1 or 0), pH, turbidity, temperature
+                        var results = info.split(",");
+                        var test_results = [];
+                        for (r in results) {
+                            var result = {};
+                            result.result = results[r];
+                            result.test_id = r;
+                            result.device_id = devices[0].id;
+                            test_results.push(result);
+                        }
+                        models.TestResult.bulkCreate(test_results).then(function(result){
+                                res.send('<Response></Response>');
+                        });
+                        console.log(test_results);
+                    }
                 });
-          } else if(devices.length > 1){
-            } else {
-               
             }
-        });*/
-
-
-    router.get('/texts/', function(req, res, next){
-        res.render('textus');
-    });
+        });
 }

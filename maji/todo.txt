@@ -1,8 +1,6 @@
 -Water User
     - if bad text, ask for better
     - if good text, give results
-- Device comms
-    - if you get a text from the device, add to dev results
 - Data
     - Sort results by location
     - paginate results
@@ -11,8 +9,7 @@
 - Admin
     - add flash messages to login and sign up pages
     - add test text function to device page
-    - add a creation hook that texts the database        
-        
+    - form validation on create and update (with flash messages)
 - Style
     - fix menu spacing
     - fix login padding
