@@ -73,6 +73,7 @@ module.exports = function(router){
                                             });
                                         });
                                     }*/
+                                    console.log(devices);
                                     console.log(rescount + " RESULTS: " + results);
                                     var message = 'Best devices: \n';
                                     if(results.length==0) 
