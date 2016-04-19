@@ -73,8 +73,9 @@ module.exports = function(router){
                                             });
                                         });
                                     }*/
-                                    console.log("RESULTS: " + results);
-                                    var message = '';
+                                    console.log(rescount + " RESULTS: " + results);
+                                    var message = 'Best devices: \n';
+                                    if(results.length==0) message = "Oh no! There are no devices near you!;
                                     for(var i = 0; i < rescount; i++){ 
                                         message = message + i + ") " + results[i].device.nickname + "\n";
                                     }
