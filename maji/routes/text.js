@@ -48,11 +48,9 @@ module.exports = function(router){
                 }).then(function(devices){
                     if(devices == null || devices.length == 0){
                         maps.geocoder.geocode(info, function(err, location){
-                            if(err || !location){
+                            if(err || location.length==0){
                                 res.send('<Response><Message>Oops! That does not look like a valid location. Please retry.</Message></Response>');
                             }
-                            console.log(err);
-                            console.log(location);
                             maps.proximitySort(location[0].latitude, location[0].longitude, devices, function(results){
                                 var rescount = 3;
                                 if(results.length < 3) rescount = results.length;
