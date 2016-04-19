@@ -75,6 +75,7 @@ module.exports = function(router, passport){
 
     require('./devices')(router, passport);
     require('./text')(router);
+    
 
 };
 

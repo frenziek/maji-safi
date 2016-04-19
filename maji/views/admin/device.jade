@@ -2,7 +2,8 @@ extends ../layouts/layout
 
 block head
     title Device: #{device.nickname}
-
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js')
+   
 block content
     #info 
         if admin
@@ -58,13 +59,24 @@ block content
         "&q=" + device.location_x  +"," + device.location_y
         +"&zoom=17&maptype=satellite" frameborder='0')
 
-    #text
-        h2 Send the device a test text
-        form(action="/texts/test" method="post")
-            input(type="text" name="Body" placeholder="Text Body")
-            br
-            div
-                input(type="submit" value="Send")
+    if admin
+        #text
+            .textmini
+                h3 Send the device a test text
+                form(id="textform" method="post" action="/texts/test")
+                    input(type="text" name="Body" placeholder="Text Body")
+                    br
+                    div
+                        input(type="submit" value="Send")
+                    #textmessage
+            .textmini
+                h3 Record to SD Card
+                form(id="sd" action="/text/sdrecord/"+device.id method="post")
+                    input(type="text" name="duration" placeholder="Recording Duration")
+                    br
+                    div
+                        input(type="submit" value="Start")
+                    #sdmessage
 
     
     #results
@@ -94,3 +106,26 @@ block content
                                 else 
                                     td N/A
                                 td #{result.result}
+    script(type='text/javascript').
+        device_id="#{device.id}";
+        device_num="#{device.phone_number}";
+        $(document).ready(function() { 
+            $('#sd').submit(function(){
+                $.post( "/text/sdrecord/"+device_id, $('#sd').serialize(), function( data ) {
+                    $("#sd").reset();
+                });
+                return false;
+            });
+            $('#textform').submit(function(){
+                $.post( "/texts/test/", 
+                {
+                    device_number: device_num,
+                    Body: $('#textform').serialize(),
+                }, function( data ) {
+                    $("#textform").reset();
+                    console.log(data);
+                });
+                return false;
+            });
+        });
+

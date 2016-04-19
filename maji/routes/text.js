@@ -13,18 +13,20 @@ module.exports = function(router){
 
     router.post('/texts/test', function(req, res, next){
         var message = req.body;
+        var tmess = message.Body.split("=")[1];
+        console.log(message);
         console.log(message.device_number);
         twilio.messages.create({ 
             to: message.device_number, 
             from: twilio_number, 
-            body: message.Body,   
+            body: tmess,   
         }, function(err, message) { 
             if(err){
                 console.log(err);    
                 res.send("uh oh");
             } else{
                 console.log(message.sid); 
-                res.redirect("/admins");
+                res.send('smashign');
             }
         });
     });
@@ -45,11 +47,13 @@ module.exports = function(router){
                 }).then(function(devices){
                     if(devices == null || devices.length == 0){
                         maps.geocoder.geocode(info, function(err, location){
-                            var x = location[0];
-                            var y = location[1];
+                            if(location.length == 0){
+                                res.send('<Response><Message>Oops! That does not look like a valid location. Please retry.</Message></Response>');
+                            }
+                            maps.proximitySort(location[0].latitude, location[0].longitude, devices, function(results){
+                                res.send('<Response><Message>'+results[0]+'</Message></Response>');
+                            });                        
                         });
-                        message = "<Message>hi user</Message>";
-                        res.send('<Response>'+message+'</Response>');
                     } else if(devices.length > 1){  
                         res.send('<Response><Message>Device duplicate error.</Message></Response>');
                     } else {
@@ -74,4 +78,27 @@ module.exports = function(router){
                 });
             }
         });
+    
+    router.post("/text/sdrecord/:device_id", function(req, res){
+        models.Device.findOne({ 
+            where: { 
+                id: req.params.device_id 
+            } 
+        }).then(function(device) {
+            twilio.messages.create({ 
+                to: device.phone_number, 
+                from: twilio_number, 
+                body: "R,"+req.body.duration+","+(new Date()).toISOString()  
+            }, function(err, message) { 
+                if(err) console.log(err);
+                else{
+                    res.status(200);
+                    res.contentType('text/html');
+                    res.send( JSON.stringify({success: "yee buddy", }));
+                }
+
+            }); 
+        });
+    });
+
 }

@@ -9,22 +9,25 @@ block content
         table
             thead
                 tr: th(colspan='9') Your Devices
-            tbody
-                tr(class='table-header') 
-                    td Nickname
-                    td Phone #
-                    td Location
-                    td Sampling Rate
-                    td Messaging Rate
-                    td  
-                each device, i in adminDevices
-                    tr(class=(i % 2 == 0) ? 'odd' : 'even') 
+            if !adminDevices
+                You don't have any active devices!
+            else
+                tbody
+                    tr(class='table-header') 
+                        td Nickname
+                        td Phone #
+                        td Location
+                        td Sampling Rate
+                        td Messaging Rate
                         td  
-                            a(href='/devices/#{device.id}') #{device.nickname}
-                        td  #{device.phone_number}
-                        td  #{device.location_x}, #{device.location_y}
-                        td  #{device.sampling_rate}
-                        td  #{device.messaging_rate}
+                    each device, i in adminDevices
+                        tr(class=(i % 2 == 0) ? 'odd' : 'even') 
+                            td  
+                                a(href='/devices/#{device.id}') #{device.nickname}
+                            td  #{device.phone_number}
+                            td  #{device.location_x}, #{device.location_y}
+                            td  #{device.sampling_rate}
+                            td  #{device.messaging_rate}
 
-                        td 
-                            a(href='devices/delete/' + device.id) Delete
+                            td 
+                                a(href='devices/delete/' + device.id) Delete

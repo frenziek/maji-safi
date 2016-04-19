@@ -1,6 +1,6 @@
 -Water User
     - if bad text, ask for better
-    - if good text, give results
+    - if good text, give results!!!!!!!!!!!!!quality number!!!
         - log results
 - Data
     - Sort results by location

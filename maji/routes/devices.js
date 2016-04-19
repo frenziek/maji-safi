@@ -87,6 +87,16 @@ module.exports = function(router, passport){
             res.redirect('/admin');
         });
     });
+    
+    router.post("/device/sdrecord", function(res, req){
+        twilio.messages.create({ 
+            to: device.phone_number, 
+            from: twilio_number, 
+            body: message,   
+        }, function(err, message) { 
+            if(err) console.log(err);
+    }); 
+    });
 
 }
 
