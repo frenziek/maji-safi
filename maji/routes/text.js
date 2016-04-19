@@ -57,7 +57,19 @@ module.exports = function(router){
                                 var yesterday = (new Date()).getDay - 1;
                                 var promises = [];
                                 for(i=0; i < rescount; i++){
-                                    promises.push(resultAsync(results[i].device.id, results[i].device.nickname));
+                                    promises.push( function(){
+                                        models.TestResult.findOne({
+                                                limit: 4,
+                                                where:{
+                                                    device_id: results.device.id,
+                                                    time: {
+                                                        $gte: yesterday
+                                                    },
+                                                }
+                                            }).then(function(results){
+                                            callback(results.device.nickname, "good");
+                                        });
+                                    });
                                 }
                                 console.log("RESULTS: " + results);
                                 var message = '';
@@ -117,15 +129,5 @@ module.exports = function(router){
 }
 
 function resultAsync(id, nickname, callback){
-    models.TestResult.findOne({
-        limit: 4,
-        where:{
-            device_id: results.device.id,
-            time: {
-                $gte: yesterday
-            },
-        }
-    }).then(function(results){
-        callback(nickname, "good");
-    });
+   
 }
