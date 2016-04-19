@@ -48,7 +48,7 @@ module.exports = function(router){
                 }).then(function(devices){
                     if(devices == null || devices.length == 0){
                         maps.geocoder.geocode(info, function(err, location){
-                            if(location.length == 0){
+                            if(location){
                                 res.send('<Response><Message>Oops! That does not look like a valid location. Please retry.</Message></Response>');
                             }
                             maps.proximitySort(location[0].latitude, location[0].longitude, devices, function(results){
@@ -59,7 +59,7 @@ module.exports = function(router){
                                 for(i=0; i < rescount; i++){
                                     promises.push(resultAsync(results[i].device.id, results[i].device.nickname));
                                 }
-                                
+                                console.log("RESULTS: " + results);
                                 var message = '';
                                 Promise.all(promises).then(function(nickname, result) {
                                     message = message + nickame + " - " + result;
