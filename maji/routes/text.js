@@ -81,10 +81,7 @@ module.exports = function(router){
                                                     message = message + (i+1) + ") " + results[i].device.nickname +
                                                         ": " + deviceGrades[i] + "\n";
                                                 }
-                                                console.log(message);
-                                                res.render('please_work', {
-                                                    message: message
-                                                });
+                                                res.send('<Response><Message>'+message+'</Message></Response>');
                                             });  
                                         }
                                     });
