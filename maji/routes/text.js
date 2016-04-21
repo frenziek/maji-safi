@@ -65,22 +65,26 @@ module.exports = function(router){
                                     maps.proximitySort(location[0].latitude, location[0].longitude, near_devices, function(results){
                                         var rescount = 3;
                                         if(results.length < 3) rescount = results.length;
-                                        if(rescount == 0) 
-                                            res.send('<Response><Message>Oh no! There are no devices near you!</Message></Response>');
-                                        else{
+                                        if(rescount == 0) {
+                                            res.render('please_work', {
+                                                message: 'Oh no! There are no devices near you!'
+                                            });
+                                        } else{
                                             var promises = [];
                                             for(var i=0; i < rescount; i++){
                                                 promises.push(resultAsync(results[i].device)); 
                                             }
 
                                             Promise.all(promises).then(function(deviceGrades){
-                                                console.log("RESULTS: " + deviceGrades);
                                                 var message = 'Best devices: \n';
                                                 for(var i = 0; i < rescount; i++){ 
                                                     message = message + (i+1) + ") " + results[i].device.nickname +
                                                         ": " + deviceGrades[i] + "\n";
                                                 }
-                                                res.send('<Response><Message>'+message+'</Message></Response>');
+                                                console.log(message);
+                                                res.render('please_work', {
+                                                    message: message
+                                                });
                                             });  
                                         }
                                     });
@@ -145,80 +149,43 @@ module.exports = function(router){
         });
     });
 
-    router.get("/please_work", function(req, res){
-        location = [{
-            latitude: 42.3333,
-            longitude: -72.111
-        }];
-        models.Device.findAll({
-            where: {
-                location_x: {
-                    $between: [location[0].latitude - 5, location[0].latitude + 5],
-                },
-                location_y: {
-                    $between: [location[0].longitude - 5, location[0].longitude + 5], 
-                }
-            }
-        }).then(function(near_devices){
-            maps.proximitySort(location[0].latitude, location[0].longitude, near_devices, function(results){
-                var rescount = 3;
-                if(results.length < 3) rescount = results.length;
-                if(rescount == 0) {
-                    res.render('please_work', {
-                        message: 'Oh no! There are no devices near you!'
-                    });
-                } else{
-                    var promises = [];
-                    for(var i=0; i < rescount; i++){
-                        promises.push(resultAsync(results[i].device)); 
-                    }
-                    
-                    Promise.all(promises).then(function(deviceGrades){
-                        var message = 'Best devices: \n';
-                        for(var i = 0; i < rescount; i++){ 
-                            message = message + (i+1) + ") " + results[i].device.nickname +
-                                ": " + deviceGrades[i] + "\n";
-                        }
-                        console.log(message);
-                        res.render('please_work', {
-                            message: message
-                        });
-                    });  
-                }
-            });
-        });
-    });
-    
-    router.get('/addtestresult', function(req, res){
-         models.TestResult.create({
-                water: 1,
-                pH: 7,
-                turbidity: 30.2,
-                temperature: 19,
-                device_id: '18af37a3-31a8-462f-b87a-b2f81f9db5de'
-        }).then(function(tr){
-             res.redirect('/devices/18af37a3-31a8-462f-b87a-b2f81f9db5de');
-         });
-    });
 }
-
-
 function resultAsync(device, callback){
     var today = Math.round(new Date().getTime() / 1000);
     var yesterday = today - (24 * 3600);
-   return "good "+yesterday;
-   /* 
-    models.TestResult.findAll({
-           // limit: 4,
+   
+   return models.TestResult.findAll({
+            limit: 4,
             where:{
                 device_id: device.id,
-                /*time: {
+                time: {
                     $gte: yesterday
                 },
             }
     }).then(function(results){
-        console.log(results);
-        return results;
+        if(results.length == 0)
+            return "Device off";
+        else if(!results[0].water && !results[1].water){
+            return "No water";   
+        }
+        else {  
+            var grade = 0;
+            for(var r = 0; r < results.length; r++){
+                if(results[r].water){
+                    grade = grade - Math.abs(7- results[r].pH) - (results[r].turbidity - 1)/5;
+                    if(results[r].temperature > 15){
+                        grade = grade - (results[r].temperature - 15)/5;
+                    }
+                }    
+            }
+            grade = 3 + grade/(results.length);
+            if( grade <= 0 ) {
+                return "bad";   
+            } else if (grade >= 2.5){
+                return "great!";
+            } else {
+                return "good";   
+            }
+        }
     });
- */   
 }

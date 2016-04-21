@@ -1,5 +1,5 @@
 var Sequelize = require('sequelize');
-var sequelize = new Sequelize("postgres://postgres:kaitlin1@localhost:5432/sdp");
+var sequelize = new Sequelize("postgres://postgres:kaitlin1@localhost:5432/sdp", {logging: false});
     //process.env.SDP_DATABASE_URL);
 var Promise = require("bluebird");
 var bcrypt = require('bcrypt-nodejs');
