@@ -78,16 +78,13 @@ Device.beforeDestroy(function(device, options){
 });
 
 
-var Test = sequelize.define('Test', {
-    id: { type: Sequelize.INTEGER, primaryKey: true},
-    test_name: { type: Sequelize.STRING, allowNull: false }
-});
-
 var TestResult = sequelize.define('TestResult', {
     id: { type: Sequelize.UUID, primaryKey: true, defaultValue: Sequelize.UUIDV4()},
-    result: { type: Sequelize.STRING },
+    water: { type: Sequelize.BOOLEAN },
+    pH: { type: Sequelize.FLOAT },
+    turbidity: { type: Sequelize.FLOAT },
+    temperature: { type: Sequelize.FLOAT },
     time:  { type: Sequelize.DATE, defaultValue: Sequelize.NOW },
-    test_id: { type: Sequelize.INTEGER},
     device_id: {type: Sequelize.UUID}
 });
 
@@ -109,36 +106,12 @@ var DeviceRec = sequelize.define('DeviceRec', {
 
 Admin.sync();
 Device.sync();
-Test.sync();
 TestResult.sync();
 UserRequest.sync();
-
-Promise.all(Test.findOrCreate(
-    {where:{ 
-        id: 0,
-        test_name: "Water Detection"
-    }}), 
-    Test.findOrCreate(
-    {where:{ 
-        id: 1,
-        test_name: "pH"
-    }}),
-    Test.findOrCreate(
-    {where:{ 
-        id: 2,
-        test_name: "Turbidity"
-    }}),
-    Test.findOrCreate(
-    {where:{ 
-        id: 3,
-        test_name: "Temperature"
-    }})
-);
 
 
 exports.module = sequelize;
 exports.Device = Device;
-exports.Test = Test;
 exports.TestResult = TestResult;
 exports.Admin = Admin;
 exports.UserRequest = UserRequest;

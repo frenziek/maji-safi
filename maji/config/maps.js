@@ -22,7 +22,6 @@ exports.proximitySort = function(lat, long, devices, callback){
         var c = Math.acos(Math.sin(rad1)*Math.sin(rad2)+Math.cos(rad1)*Math.cos(rad2)*Math.cos(d21));
 
         var distance = (R * c).toFixed(3);
-        console.log(distance + " km");
         results.push({
             device: d,
             distance: distance,

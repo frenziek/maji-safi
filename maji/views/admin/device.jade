@@ -82,30 +82,28 @@ block content
     #results
         table
             thead
-                tr: th(colspan='3') Test Results
+                tr: th(colspan='5') Test Results
             tbody
                 if(results.length == 0)
                     tr(class='odd')
-                        td(colspan='3')  This device has not reported any results yet.
+                        td(colspan='5')  This device has not reported any results yet.
                 else
                     tr(class='table-header') 
                         td Time
-                        td Test
-                        td Result
+                        td Water Present
+                        td pH
+                        td Turbidity (ntu)
+                        td Temperature (&deg;C)
                         each result, i in results
                             tr(class=(i % 2 == 0) ? 'odd' : 'even') 
                                 td #{result.time} 
-                                if(result.test_id == 0)
-                                    td Water Detection
-                                else if(result.test_id == 1)
-                                    td pH
-                                else if(result.test_id == 2)
-                                    td Turbidity
-                                else if(result.test_id == 3)
-                                    td Temperature
-                                else 
-                                    td N/A
-                                td #{result.result}
+                                if result.water
+                                    td Yes
+                                else
+                                    td No
+                                td #{result.pH} 
+                                td #{result.turbidity} 
+                                td #{result.temperature} 
     script(type='text/javascript').
         device_id="#{device.id}";
         device_num="#{device.phone_number}";

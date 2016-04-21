@@ -103,21 +103,20 @@ module.exports = function(router){
                         }
                         else{
                             var results = info.split(",");
-                            var test_results = [];
                             if(results.length != 4){
                                 res.send('<Response><Message>Message formatting error.</Message></Response>');   
                             }
-                            for (r in results) {
-                                var result = {};
-                                result.result = results[r];
-                                result.test_id = r;
-                                result.device_id = devices[0].id;
-                                test_results.push(result);
-                            }
-                            models.TestResult.bulkCreate(test_results).then(function(result){
-                                    res.send('<Response></Response>');
+                
+                            models.TestResult.create({
+                                water: results[0],
+                                pH: results[1],
+                                turbidity: results[2],
+                                temperature: results[3],
+                                device_id: devices[0].id
+                            }).then(function(result){
+                                console.log(result);
+                                res.send('<Response></Response>');
                             });
-                            console.log(test_results);
                         }
                     }
                 });
@@ -161,7 +160,6 @@ module.exports = function(router){
                 }
             }
         }).then(function(near_devices){
-            console.log(near_devices.length);
             maps.proximitySort(location[0].latitude, location[0].longitude, near_devices, function(results){
                 var rescount = 3;
                 if(results.length < 3) rescount = results.length;
@@ -172,16 +170,16 @@ module.exports = function(router){
                 } else{
                     var promises = [];
                     for(var i=0; i < rescount; i++){
-                        promises.push(testresultAsync(results[i].device)); 
+                        promises.push(resultAsync(results[i].device)); 
                     }
-
+                    
                     Promise.all(promises).then(function(deviceGrades){
-                        console.log("RESULTS: " + deviceGrades);
                         var message = 'Best devices: \n';
                         for(var i = 0; i < rescount; i++){ 
                             message = message + (i+1) + ") " + results[i].device.nickname +
                                 ": " + deviceGrades[i] + "\n";
                         }
+                        console.log(message);
                         res.render('please_work', {
                             message: message
                         });
@@ -190,42 +188,37 @@ module.exports = function(router){
             });
         });
     });
-}
-
-function testresultAsync(device, callback){
-    var today = Math.round(new Date().getTime() / 1000);
-    var yesterday = today - (24 * 3600);
     
-    models.TestResult.findOne({
-            limit: 4,
-            where:{
-                device_id: device.id,
-                time: {
-                    $gte: yesterday
-                },
-            }
-    }).then(function(results){
-        return "good";
+    router.get('/addtestresult', function(req, res){
+         models.TestResult.create({
+                water: 1,
+                pH: 7,
+                turbidity: 30.2,
+                temperature: 19,
+                device_id: '18af37a3-31a8-462f-b87a-b2f81f9db5de'
+        }).then(function(tr){
+             res.redirect('/devices/18af37a3-31a8-462f-b87a-b2f81f9db5de');
+         });
     });
-    
 }
 
 
 function resultAsync(device, callback){
     var today = Math.round(new Date().getTime() / 1000);
     var yesterday = today - (24 * 3600);
-    return "good";
-    /*
-    models.TestResult.findOne({
-            limit: 4,
+   return "good "+yesterday;
+   /* 
+    models.TestResult.findAll({
+           // limit: 4,
             where:{
                 device_id: device.id,
-                time: {
+                /*time: {
                     $gte: yesterday
                 },
             }
     }).then(function(results){
-        return "good";
+        console.log(results);
+        return results;
     });
-    */
+ */   
 }
