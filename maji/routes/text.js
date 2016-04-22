@@ -107,9 +107,13 @@ module.exports = function(router){
                             if(results.length != 4){
                                 res.send('<Response><Message>Message formatting error.</Message></Response>');   
                             }
-                
+                            var aqua = false;
+                            if(results[0] == 1.00){
+                                aqua = true;   
+                            }
+                            
                             models.TestResult.create({
-                                water: results[0],
+                                water: aqua,
                                 pH: results[1],
                                 turbidity: results[2],
                                 temperature: results[3],
