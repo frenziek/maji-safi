@@ -25,9 +25,11 @@ module.exports = function(router, passport){
                 }
             }).then(function(device){
                 models.TestResult.findAll({
+                    limit: 50,
                     where: {
                         device_id: device_id   
-                    }
+                    }, 
+                    order: 'time DESC',
                 }).then(function(results){
                     res.render('admin/device', {
                         device: device[0],

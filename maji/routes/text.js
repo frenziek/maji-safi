@@ -79,7 +79,7 @@ module.exports = function(router){
                                                 var message = 'Best devices: \n';
                                                 for(var i = 0; i < rescount; i++){ 
                                                     message = message + (i+1) + ") " + results[i].device.nickname +
-                                                        ": " + deviceGrades[i] + "\n";
+                                                        ": " + deviceGrades[i] + +" ("+results[i].distance+"km) \n";
                                                 }
                                                 res.send('<Response><Message>'+message+'</Message></Response>');
                                             });  
@@ -162,7 +162,8 @@ function resultAsync(device, callback){
                 time: {
                     $gte: yesterday
                 },
-            }
+            },
+            order: 'time DESC', 
     }).then(function(results){
         if(results.length == 0)
             return "Device off";
@@ -181,11 +182,19 @@ function resultAsync(device, callback){
             }
             grade = 3 + grade/(results.length);
             if( grade <= 0 ) {
-                return "bad";   
+                return {
+                    message: "bad", 
+                    grade: grade
+                };   
             } else if (grade >= 2.5){
-                return "great!";
+                return {
+                    message: "great!", 
+                    grade: grade};
             } else {
-                return "good";   
+                return {
+                message: "good",
+                grade: grade
+                };   
             }
         }
     });

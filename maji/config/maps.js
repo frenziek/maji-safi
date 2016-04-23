@@ -28,7 +28,7 @@ exports.proximitySort = function(lat, long, devices, callback){
         });
     });
     results.sort(function(a, b) {
-        return a.dist - b.dist;
+        return a.distance - b.distance;
     });
     callback(results);
 };
