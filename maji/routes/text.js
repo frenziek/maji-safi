@@ -80,7 +80,7 @@ module.exports = function(router){
                                                 var submessages = [];
                                                 for(var i = 0; i < rescount; i++){
                                                         submessages.push({
-                                                            message:(i+1) + ") " + results[i].device.nickname +
+                                                            message: results[i].device.nickname +
                                                         ": " + deviceGrades[i].message +" ("+results[i].distance+"km) \n",
                                                             grade: deviceGrades[i].grade});
                                                 }
@@ -88,7 +88,7 @@ module.exports = function(router){
                                                     return b.grade - a.grade;
                                                 });
                                                 for(var i = 0; i < rescount; i++){
-                                                    message = message + submessages[i].message;   
+                                                    message = message + (i+1) + ") " + submessages[i].message;   
                                                 }
                                                 res.send('<Response><Message>'+message+'</Message></Response>');
                                             });  
