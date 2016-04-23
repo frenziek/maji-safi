@@ -88,7 +88,7 @@ module.exports = function(router){
                                                     return b.grade - a.grade;
                                                 });
                                                 for(var i = 0; i < rescount; i++){
-                                                    message = message + submessages[i];   
+                                                    message = message + submessages[i].message;   
                                                 }
                                                 res.send('<Response><Message>'+message+'</Message></Response>');
                                             });  
