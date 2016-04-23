@@ -77,12 +77,18 @@ module.exports = function(router){
 
                                             Promise.all(promises).then(function(deviceGrades){
                                                 var message = 'Best devices: \n';
-                                                deviceGrades.sort(function(a, b) {
+                                                var submessages = [];
+                                                for(var i = 0; i < rescount; i++){
+                                                        submessages.push({
+                                                            message:(i+1) + ") " + results[i].device.nickname +
+                                                        ": " + deviceGrades[i].message +" ("+results[i].distance+"km) \n",
+                                                            grade: deviceGrades[i].grade});
+                                                }
+                                                submessages.sort(function(a, b) {
                                                     return b.grade - a.grade;
                                                 });
                                                 for(var i = 0; i < rescount; i++){
-                                                        message = message + (i+1) + ") " + results[i].device.nickname +
-                                                        ": " + deviceGrades[i].message +" ("+results[i].distance+"km) \n";
+                                                    message = message + submessages[i];   
                                                 }
                                                 res.send('<Response><Message>'+message+'</Message></Response>');
                                             });  
