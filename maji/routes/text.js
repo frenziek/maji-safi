@@ -77,9 +77,12 @@ module.exports = function(router){
 
                                             Promise.all(promises).then(function(deviceGrades){
                                                 var message = 'Best devices: \n';
-                                                for(var i = 0; i < rescount; i++){ 
-                                                    message = message + (i+1) + ") " + results[i].device.nickname +
-                                                        ": " + deviceGrades[i] + +" ("+results[i].distance+"km) \n";
+                                                deviceGrades.sort(function(a, b) {
+                                                    return b.grade - a.grade;
+                                                });
+                                                for(var i = 0; i < rescount; i++){
+                                                        message = message + (i+1) + ") " + results[i].device.nickname +
+                                                        ": " + deviceGrades[i].message +" ("+results[i].distance+"km) \n";
                                                 }
                                                 res.send('<Response><Message>'+message+'</Message></Response>');
                                             });  
@@ -166,9 +169,14 @@ function resultAsync(device, callback){
             order: 'time DESC', 
     }).then(function(results){
         if(results.length == 0)
-            return "Device off";
+            return {
+                message: "Device off", 
+                grade: -1000000};
         else if(!results[0].water && !results[1].water){
-            return "No water";   
+            return {
+                message: "No water", 
+                grade: -2000000
+            };   
         }
         else {  
             var grade = 0;
