@@ -1,5 +1,6 @@
 var Sequelize = require('sequelize');
-var sequelize = new Sequelize(process.env.DATABASE_URL);
+var url = process.env.DATABASE_URL || 'sqlite://maji_dev.sqlite';
+var sequelize = new Sequelize(url);
 var Promise = require("bluebird");
 var bcrypt = require('bcrypt-nodejs');
 var twilio = require('../config/twilio.js').twilio;
