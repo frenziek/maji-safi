@@ -15,4 +15,4 @@ TWILIO_AUTH_TOKEN=
 TWILIO_NUMBER=
 SESSION_SECRET=
 ```
-Use `npm start` to run the app. By default, the app will create a local sqlite database, but instantiating a DATABASE\_URL variable in the env file will override that. 
+Use `npm start` to run the app. By default, the app will create a local sqlite database to use, but instantiating a DATABASE\_URL variable in the env file will override that. 
