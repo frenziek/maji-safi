@@ -3,3 +3,4 @@ node_modules
 .env
 .xcf
 xcf
+.DS_Store
