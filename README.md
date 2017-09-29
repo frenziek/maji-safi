@@ -4,7 +4,7 @@ Maji Safi was a 2016 Umass Amherst ECE Senior Design project. This is the web co
 
 ### [Project Website](http://www.ecs.umass.edu/ece/sdp/sdp16/team13/MajiSafiWebsite.html)
 
-An archived version of the web app lives [on Glitch](https://maji-safi.glitch.me/), though the Bubble is not on or in water, and the original twilio number is disconnected. 
+An archived version of the web app lives [on Glitch](https://maji-safi.glitch.me/), though the Bubble is not online or in water, and the original twilio number is disconnected. 
 
 ### Installation
 To install, clone the repository and run `npm install` to install dependencies. To use the full functionality of the app, the following environment variables are requried in a .env file:
