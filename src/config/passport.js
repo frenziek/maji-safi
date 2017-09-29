@@ -1,5 +1,5 @@
 var LocalStrategy   = require('passport-local').Strategy;
-var User            = require('../models/cereal').Admin;
+var User            = require('../models/index').Admin;
 
 module.exports = function(passport) {
     passport.serializeUser(function(user, done) {

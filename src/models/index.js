@@ -1,10 +1,19 @@
 var Sequelize = require('sequelize');
-var sequelize = new Sequelize(process.env.SDP_DATABASE_URL, {logging: false});
-
+var sequelize = new Sequelize(process.env.DATABASE_URL);
 var Promise = require("bluebird");
 var bcrypt = require('bcrypt-nodejs');
 var twilio = require('../config/twilio.js').twilio;
 var twilio_number = require('../config/twilio.js').number;
+
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Database connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('ERROR: Unable to connect to the database:', err);
+  });
+
 
 var Admin = sequelize.define('Admin', {
     id: { type: Sequelize.UUID, primaryKey: true, defaultValue: Sequelize.UUIDV4()},
@@ -104,10 +113,7 @@ var DeviceRec = sequelize.define('DeviceRec', {
     rank: {type: Sequelize.INTEGER}
 });
 
-Admin.sync();
-Device.sync();
-TestResult.sync();
-UserRequest.sync();
+sequelize.sync();
 
 
 exports.module = sequelize;

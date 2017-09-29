@@ -1,4 +1,4 @@
-var env = require('dotenv');
+require('dotenv').load();     
 var port = process.env.PORT || 3000;
 var express = require('express');
 var path = require('path');

@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var models = require('../models/cereal.js');
+var models = require('../models/index.js');
 var maps = require('../config/maps.js');
 var Promise = require("bluebird");
 
