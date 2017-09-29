@@ -1,1 +1,0 @@
-console.log(process.env.SDP_DATABASE_URL);
